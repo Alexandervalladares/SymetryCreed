@@ -1,0 +1,17 @@
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray_bg">#121212</color>
+    <color name="gray_box">#2A2A28</color>
+    <color name="gray_line">#2E2E2E</color>
+    <color name="gray_google">#3C3C3C</color>
+    <color name="red_accent">#B44240</color>
+    <color name="hint">#9A9A9A</color>
+    <color name="link">#03DAC5</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="background_dark">#121212</color>
+    <color name="gray_box_selected">#401919</color>
+
+    <color name="input_bg_dark">#232323</color>
+
+</resources>

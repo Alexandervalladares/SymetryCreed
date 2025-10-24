@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="card_stroke_selected">2dp</dimen>
+    <dimen name="card_elevation_selected">6dp</dimen>
+</resources>

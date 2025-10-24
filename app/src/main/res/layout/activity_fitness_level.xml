@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/black">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_back_chevron"
+            android:tint="@android:color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estado Físico Actual"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            android:letterSpacing="0.02"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="6dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selecciona tu nivel de experiencia con el ejercicio"
+            android:textColor="#CFCFCF"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- PRINCIPIANTE -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardBeginner"
+            style="@style/FitnessOptionCard">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/FitnessOptionTitle"
+                    android:text="Principiante" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/FitnessOptionSubtitle"
+                    android:text="Nuevo en el ejercicio" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- INTERMEDIO -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardIntermediate"
+            style="@style/FitnessOptionCard"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/FitnessOptionTitle"
+                    android:text="Intermedio" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/FitnessOptionSubtitle"
+                    android:text="Ejericito regularmente" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- AVANZADO -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardAdvanced"
+            style="@style/FitnessOptionCard"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/FitnessOptionTitle"
+                    android:text="Avanzado" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/FitnessOptionSubtitle"
+                    android:text="Muy experimentado" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnContinue"
+            style="@style/RoundedButton"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="20dp"
+            android:text="Continuar"
+            android:enabled="false"
+            android:backgroundTint="@color/red_accent" />
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "542007435111",
+    "firebase_url": "https://symetrycreed-default-rtdb.firebaseio.com",
+    "project_id": "symetrycreed",
+    "storage_bucket": "symetrycreed.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542007435111:android:3e4c1a17396a805a79d9c2",
+        "android_client_info": {
+          "package_name": "com.app.symetrycreed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "542007435111-9jqarn4go0d27j92aqshnip0fkkmbrnp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.symetrycreed",
+            "certificate_hash": "cf8644bf17fec0c18de8eabd497265d2879248e5"
+          }
+        },
+        {
+          "client_id": "542007435111-86c7imkog06tt6j16cr5l9ifhjeci8t0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRyrOp4DTmj9f6bvmLMJLl-UjGM7ZNLSw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "542007435111-86c7imkog06tt6j16cr5l9ifhjeci8t0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

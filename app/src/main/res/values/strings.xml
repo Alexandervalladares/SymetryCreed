@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SymetryCreed</string>
+    <string name="btn_sign_up">Sign Up</string>
+    <string name="btn_login">Login</string>
+
+    <!-- CLIENT_ID tipo 1 (Android) de tu google-services.json -->
+    <string name="default_web_client_id">
+        542007435111-9jqarn4go0d27j92aqshnip0fkkmbrnp.apps.googleusercontent.com
+    </string>
+</resources>
