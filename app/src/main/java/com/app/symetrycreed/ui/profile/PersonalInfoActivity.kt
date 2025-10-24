@@ -55,11 +55,13 @@ class PersonalInfoActivity : AppCompatActivity() {
         }
     }
 
+
     private fun openDatePicker() {
         val cal = Calendar.getInstance()
         val dialog = DatePickerDialog(
             this,
             { _, y, m, d ->
+
                 // Almacenar y mostrar como dd/MM/yyyy, guardar como ISO
                 val calSel = Calendar.getInstance().apply { set(y, m, d, 0, 0, 0) }
                 selectedDateIso = isoDate.format(calSel.time)
@@ -69,6 +71,17 @@ class PersonalInfoActivity : AppCompatActivity() {
             cal.get(Calendar.MONTH),
             cal.get(Calendar.DAY_OF_MONTH)
         )
+
+        // Cambiar colores de los botones cuando se muestre el diálogo
+        dialog.setOnShowListener {
+            val positiveButton = dialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
+            val negativeButton = dialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
+
+            // Color rojo para que sean visibles
+            positiveButton?.setTextColor(resources.getColor(com.app.symetrycreed.R.color.red_accent, null))
+            negativeButton?.setTextColor(resources.getColor(com.app.symetrycreed.R.color.red_accent, null))
+        }
+
         dialog.show()
     }
 

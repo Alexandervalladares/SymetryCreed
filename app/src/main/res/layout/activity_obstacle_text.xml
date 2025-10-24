@@ -3,71 +3,84 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/gray_bg"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="24dp">
 
+        <!-- Back Button -->
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_back_chevron"
-            android:tint="@android:color/white"/>
+            android:tint="@android:color/white"
+            android:contentDescription="Volver"/>
 
+        <!-- Título -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mayor Obstáculo"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="26sp"
-            android:layout_marginTop="8dp"/>
+            android:textSize="24sp"
+            android:layout_marginTop="12dp"/>
 
+        <!-- Subtítulo -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="¿Cuál es tu mayor obstáculo para hacer ejercicio?"
-            android:textColor="#CFCFCF"
+            android:textColor="#999999"
             android:textSize="14sp"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="16dp"/>
+            android:lineSpacingExtra="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="40dp"/>
 
-        <!-- Caja de texto -->
+        <!-- Campo de texto -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilObstacle"
             style="@style/FilledInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Ej: Falta de tiempo, motivación, etc."
-            app:boxCornerRadiusTopStart="16dp"
-            app:boxCornerRadiusTopEnd="16dp"
-            app:boxCornerRadiusBottomStart="16dp"
-            app:boxCornerRadiusBottomEnd="16dp">
+            app:hintTextColor="#7A7A7A"
+            app:boxStrokeColor="@color/red_accent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etObstacle"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:inputType="textMultiLine"
+                android:layout_height="160dp"
+                android:inputType="textMultiLine|textCapSentences"
                 android:gravity="top|start"
                 android:textColor="@android:color/white"
-                android:textColorHint="#9FA3A7"
-                android:padding="12dp"/>
+                android:textColorHint="#7A7A7A"
+                android:textSize="15sp"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:paddingTop="48dp"
+                android:paddingBottom="18dp"
+                android:imeOptions="actionDone"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Botón Continuar -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnContinue"
             style="@style/RoundedButton"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="24dp"
             android:text="Continuar"
+            android:textSize="16sp"
             android:enabled="false"
             android:backgroundTint="@color/red_accent"/>
     </LinearLayout>
