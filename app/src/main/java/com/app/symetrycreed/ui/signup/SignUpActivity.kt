@@ -7,6 +7,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.app.symetrycreed.databinding.ActivitySignUpBinding
+import com.app.symetrycreed.ui.home.CenterActivity
 import com.app.symetrycreed.ui.home.HolaMundoActivity
 import com.app.symetrycreed.ui.login.MainActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -27,7 +28,6 @@ class SignUpActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
         binding.tvLogin.setOnClickListener {
-            // Ir al flujo de login (puedes tener otra pantalla si quieres)
             startActivity(Intent(this, MainActivity::class.java))
         }
 
@@ -80,19 +80,56 @@ class SignUpActivity : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 binding.btnCreate.isEnabled = true
                 if (task.isSuccessful) {
-                    val uid = auth.currentUser?.uid ?: return@addOnCompleteListener
+                    val user = auth.currentUser ?: run {
+                        Toast.makeText(this, "Error creando cuenta", Toast.LENGTH_LONG).show()
+                        return@addOnCompleteListener
+                    }
+                    val uid = user.uid
                     val userRef = db.child("users").child(uid)
                     val data = mapOf(
                         "uid" to uid,
                         "name" to name,
                         "email" to email,
                         "photoUrl" to "",
-                        "provider" to "password",
-                        "createdAt" to ServerValue.TIMESTAMP,
-                        "lastLoginAt" to ServerValue.TIMESTAMP
+                        "provider" to "password"
                     )
-                    userRef.setValue(data).addOnCompleteListener {
-                        goHome()
+
+                    // Comportamiento solicitado:
+                    // - Si NO existe /users/{uid} -> crear nodo y entrar en onboarding (HolaMundoActivity)
+                    // - Si YA existe -> no sobreescribir, solo actualizar lastLoginAt y enviar a CenterActivity
+                    userRef.get().addOnSuccessListener { snap ->
+                        if (!snap.exists()) {
+                            val toCreate = data + mapOf(
+                                "createdAt" to ServerValue.TIMESTAMP,
+                                "lastLoginAt" to ServerValue.TIMESTAMP
+                            )
+                            userRef.setValue(toCreate)
+                                .addOnCompleteListener {
+                                    // Nuevo usuario -> onboarding / HolaMundoActivity
+                                    startActivity(Intent(this, HolaMundoActivity::class.java))
+                                    finish()
+                                }
+                                .addOnFailureListener {
+                                    // Si falla el guardado, igualmente vamos al onboarding para que el usuario complete perfil
+                                    startActivity(Intent(this, HolaMundoActivity::class.java))
+                                    finish()
+                                }
+                        } else {
+                            // Ya existe: NO sobreescribir perfil, solo actualizar lastLoginAt y enviar a Center
+                            userRef.updateChildren(mapOf("lastLoginAt" to ServerValue.TIMESTAMP) as Map<String, Any>)
+                                .addOnCompleteListener {
+                                    startActivity(Intent(this, CenterActivity::class.java))
+                                    finish()
+                                }
+                                .addOnFailureListener {
+                                    startActivity(Intent(this, CenterActivity::class.java))
+                                    finish()
+                                }
+                        }
+                    }.addOnFailureListener {
+                        // Si no podemos comprobar, por seguridad enviamos al onboarding para que complete datos
+                        startActivity(Intent(this, HolaMundoActivity::class.java))
+                        finish()
                     }
                 } else {
                     Toast.makeText(
@@ -109,10 +146,5 @@ class SignUpActivity : AppCompatActivity() {
         binding.tilEmail.error = null
         binding.tilPass.error = null
         binding.tilConfirm.error = null
-    }
-
-    private fun goHome() {
-        startActivity(Intent(this, HolaMundoActivity::class.java))
-        finish()
     }
 }

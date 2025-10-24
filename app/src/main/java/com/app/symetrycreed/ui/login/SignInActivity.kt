@@ -7,7 +7,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.app.symetrycreed.databinding.ActivitySignInBinding
-import com.app.symetrycreed.ui.home.HolaMundoActivity
+import com.app.symetrycreed.ui.home.CenterActivity
 import com.app.symetrycreed.ui.signup.SignUpActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -28,7 +28,7 @@ class SignInActivity : AppCompatActivity() {
 
         // Google → reutiliza tu flujo existente
         binding.btnGoogle.setOnClickListener {
-            startActivity(Intent(this, com.app.symetrycreed.ui.login.MainActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         // Enter en password
@@ -72,13 +72,24 @@ class SignInActivity : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 binding.btnSignIn.isEnabled = true
                 if (task.isSuccessful) {
-                    // Actualiza lastLoginAt en /users/{uid}
+                    // Usuario ya existente: solo actualizar lastLoginAt y navegar a CenterActivity
                     auth.currentUser?.uid?.let { uid ->
                         db.child("users").child(uid)
                             .updateChildren(mapOf("lastLoginAt" to ServerValue.TIMESTAMP))
-                            .addOnCompleteListener { goHome() }
-                            .addOnFailureListener { goHome() }
-                    } ?: goHome()
+                            .addOnCompleteListener {
+                                startActivity(Intent(this, CenterActivity::class.java))
+                                finish()
+                            }
+                            .addOnFailureListener {
+                                // Aunque falle la actualización, vamos al centro
+                                startActivity(Intent(this, CenterActivity::class.java))
+                                finish()
+                            }
+                    } ?: run {
+                        // Si por alguna razón no hay uid, ir al centro de todas formas
+                        startActivity(Intent(this, CenterActivity::class.java))
+                        finish()
+                    }
                 } else {
                     Toast.makeText(
                         this,
@@ -88,8 +99,6 @@ class SignInActivity : AppCompatActivity() {
                 }
             }
     }
-
-    // com.app.symetrycreed.ui.login.SignInActivity.kt
 
     private fun sendReset() {
         val email = binding.etEmail.text?.toString()?.trim().orEmpty()
@@ -105,11 +114,5 @@ class SignInActivity : AppCompatActivity() {
             .addOnFailureListener {
                 android.widget.Toast.makeText(this, "No se pudo enviar: ${it.localizedMessage}", android.widget.Toast.LENGTH_LONG).show()
             }
-    }
-
-
-    private fun goHome() {
-        startActivity(Intent(this, HolaMundoActivity::class.java))
-        finish()
     }
 }

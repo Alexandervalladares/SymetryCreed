@@ -7,6 +7,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.app.symetrycreed.R
+import com.app.symetrycreed.ui.home.CenterActivity
 import com.app.symetrycreed.ui.home.HolaMundoActivity
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -43,31 +44,47 @@ class MainActivity : AppCompatActivity() {
                                             "photoUrl" to (user.photoUrl?.toString() ?: ""),
                                             "provider" to "google"
                                         )
-                                        // Crear si no existe; si existe actualiza lastLoginAt y datos básicos
+
+                                        // Si NO existe -> crear nodo y enviar a onboarding (HolaMundoActivity)
+                                        // Si ya existe -> solo actualizar lastLoginAt y enviar a CenterActivity
                                         usersRef.get().addOnSuccessListener { snap ->
                                             if (!snap.exists()) {
-                                                usersRef.setValue(
-                                                    baseData + mapOf(
-                                                        "createdAt" to ServerValue.TIMESTAMP,
-                                                        "lastLoginAt" to ServerValue.TIMESTAMP
-                                                    )
-                                                ).addOnCompleteListener { _ ->
-                                                    goHome()
-                                                }
+                                                val dataToCreate = baseData + mapOf(
+                                                    "createdAt" to ServerValue.TIMESTAMP,
+                                                    "lastLoginAt" to ServerValue.TIMESTAMP
+                                                )
+                                                usersRef.setValue(dataToCreate)
+                                                    .addOnCompleteListener { _ ->
+                                                        // Nuevo usuario -> onboarding
+                                                        startActivity(Intent(this, HolaMundoActivity::class.java))
+                                                        finish()
+                                                    }
+                                                    .addOnFailureListener {
+                                                        // Aunque falle el guardado, vamos al onboarding para completar
+                                                        startActivity(Intent(this, HolaMundoActivity::class.java))
+                                                        finish()
+                                                    }
                                             } else {
-                                                usersRef.updateChildren(
-                                                    (baseData + mapOf(
-                                                        "lastLoginAt" to ServerValue.TIMESTAMP
-                                                    )) as Map<String, Any>
-                                                ).addOnCompleteListener { _ ->
-                                                    goHome()
-                                                }
+                                                // Usuario ya existe -> solo update lastLoginAt y entrar al centro
+                                                usersRef.updateChildren(mapOf("lastLoginAt" to ServerValue.TIMESTAMP) as Map<String, Any>)
+                                                    .addOnCompleteListener { _ ->
+                                                        startActivity(Intent(this, CenterActivity::class.java))
+                                                        finish()
+                                                    }
+                                                    .addOnFailureListener {
+                                                        startActivity(Intent(this, CenterActivity::class.java))
+                                                        finish()
+                                                    }
                                             }
                                         }.addOnFailureListener {
-                                            goHome()
+                                            // Si no podemos leer la DB, hacemos fallback: si es nuevo probablemente no exista;
+                                            // para ser conservadores, mandamos a onboarding
+                                            startActivity(Intent(this, HolaMundoActivity::class.java))
+                                            finish()
                                         }
                                     } else {
-                                        goHome()
+                                        // No user in auth -> ir a login
+                                        Toast.makeText(this, "Error: usuario no disponible", Toast.LENGTH_SHORT).show()
                                     }
                                 } else {
                                     Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
@@ -107,10 +124,5 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "Error al iniciar sesión: ${it.message}", Toast.LENGTH_SHORT).show()
                 }
         }
-    }
-
-    private fun goHome() {
-        startActivity(Intent(this, HolaMundoActivity::class.java))
-        finish()
     }
 }

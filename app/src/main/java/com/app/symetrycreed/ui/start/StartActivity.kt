@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.app.symetrycreed.databinding.ActivityStartBinding
-import com.app.symetrycreed.ui.home.HolaMundoActivity
+import com.app.symetrycreed.ui.home.CenterActivity
 import com.app.symetrycreed.ui.login.MainActivity
 import com.app.symetrycreed.ui.signup.SignUpActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -31,9 +31,10 @@ class StartActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Si ya hay sesión iniciada, ir directo a la home
+
+        // Si ya hay sesión iniciada, ir directo al dashboard central (salta onboarding)
         auth.currentUser?.let {
-            startActivity(Intent(this, HolaMundoActivity::class.java))
+            startActivity(Intent(this, CenterActivity::class.java))
             finish()
         }
     }
