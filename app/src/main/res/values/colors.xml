@@ -12,6 +12,16 @@
     <color name="background_dark">#121212</color>
     <color name="gray_box_selected">#401919</color>
 
+    <color name="stripe_red">#FF5160</color>
+    <color name="stripe_teal">#3DE1C8</color>
+    <color name="accentRed">#B72222</color> <!-- rojo oscuro similar a las imágenes -->
     <color name="input_bg_dark">#232323</color>
+    <color name="background">#070707</color> <!-- fondo muy oscuro -->
+    <color name="cardBackground">#121212</color> <!-- color tarjeta -->
+    <color name="textPrimary">#FFFFFF</color>
+    <color name="textSecondary">#9C9C9C</color>
+    <color name="cyan">#811818</color> <!-- botón principal -->
+    <color name="cyan_dark">@color/gray_box_selected</color> <!-- badge text color -->
+    <color name="badgeBackground">@color/hint</color>
 
 </resources>

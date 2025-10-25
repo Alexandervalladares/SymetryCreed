@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/generate_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/content_generate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Título -->
+            <TextView
+                android:id="@+id/tvPlanesTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Planes"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvPlanesSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Programas estructurados para tus objetivos"
+                android:textColor="#9FA3A7"
+                android:textSize="13sp"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Botón Crear Nuevo Plan (dashed) -->
+            <TextView
+                android:id="@+id/btnCreatePlan"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center_vertical|center"
+                android:padding="12dp"
+                android:background="@drawable/bg_dashed_create"
+                android:text="+  Crear Nuevo Plan"
+                android:textColor="@color/cyan"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginBottom="18dp" />
+
+            <!-- Lista de planes (se llena dinámicamente en GenerateTrainingActivity) -->
+            <LinearLayout
+                android:id="@+id/containerPlans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+        </LinearLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

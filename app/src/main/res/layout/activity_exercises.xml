@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_exercises"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:id="@+id/root_exercises"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header: Título editable y botón Agregar ejercicio -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/edtTrainingTitle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="44dp"
+                android:hint="Título del entrenamiento"
+                android:background="@drawable/bg_card_small"
+                android:padding="8dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="#9FA3A7"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnAddExercise"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="+ Agregar"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Contenedor donde se irán añadiendo exercise_item.xml -->
+        <LinearLayout
+            android:id="@+id/containerExercises"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp" />
+
+        <!-- Botón guardar -->
+        <TextView
+            android:id="@+id/btnSaveTraining"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/bg_cyan_button"
+        android:gravity="center"
+        android:text="Guardar Entrenamiento"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

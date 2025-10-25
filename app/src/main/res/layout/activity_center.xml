@@ -43,7 +43,9 @@
             </LinearLayout>
 
             <!-- CARD: Nuevo Entrenamiento -->
+            <!-- Reemplaza la definición original del MaterialCardView "Nuevo Entrenamiento" por esta (se añadió android:id="@+id/cardNuevoEntrenamiento") -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardNuevoEntrenamiento"
                 style="@style/DashboardCard"
                 android:layout_marginTop="10dp">
 
@@ -87,8 +89,10 @@
 
             <!-- CARD: Generar Entrenamiento -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardGenerarEntrenamiento"
                 style="@style/DashboardCard"
                 android:layout_marginTop="12dp">
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -168,7 +172,9 @@
             </com.google.android.material.card.MaterialCardView>
 
             <!-- CARD: Tus Rutinas (con contador badge) -->
+            <!-- Se añadió android:id="@+id/cardTusRutinas" para que binding.cardTusRutinas exista -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTusRutinas"
                 style="@style/DashboardCard"
                 android:layout_marginTop="12dp">
 

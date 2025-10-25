@@ -15,7 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SymetryCreed"
         tools:targetApi="31">
-
+        <activity android:name=".ui.training.TrainingActivity" android:exported="false" />
+        <activity android:name=".ui.training.ExercisesActivity" android:exported="false" />
+        <activity android:name=".ui.training.TimerActivity" android:exported="false" />
+        <activity android:name=".ui.training.RoutinesActivity" android:exported="false" />
+        <!-- Añadir dentro de <application> -->
+        <activity
+            android:name=".ui.training.GenerateTrainingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SymetryCreed.NoActionBar" />
         <!-- Launcher -->
         <activity
             android:name=".ui.start.StartActivity"
