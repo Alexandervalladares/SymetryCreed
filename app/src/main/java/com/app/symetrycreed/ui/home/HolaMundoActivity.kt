@@ -20,7 +20,8 @@ class HolaMundoActivity : AppCompatActivity() {
         // Texto de bienvenida
         val user = auth.currentUser
         val nombre = user?.displayName ?: "Entrenador"
-        binding.tvBienvenida.text = "¡Bienvenido a CreedGym!"
+        // Mostrar el nombre en el mensaje de bienvenida
+        binding.tvBienvenida.text = "¡Bienvenido a CreedGym, $nombre!"
         binding.tvDescripcion.text =
             "Vamos a configurar tu perfil para crear entrenamientos personalizados"
 

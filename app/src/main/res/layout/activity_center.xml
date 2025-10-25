@@ -32,12 +32,14 @@
                     android:textSize="22sp"/>
 
                 <TextView
+                    android:id="@+id/tvUsuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="  Usuario"
+                    android:text="Usuario"
                     android:textStyle="bold"
                     android:textColor="@android:color/white"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
 
             <!-- CARD: Nuevo Entrenamiento -->
