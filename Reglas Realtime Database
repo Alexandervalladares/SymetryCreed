@@ -1,0 +1,523 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "public": {
+      ".read": true,
+      ".write": false
+    },
+
+    "plans": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$planId": {
+        ".validate": "newData.hasChildren(['title','level'])",
+        "id": {
+          ".validate": "newData.isString()"
+        },
+        "title": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+        },
+        "level": {
+          ".validate": "newData.isString()"
+        },
+        "weeks": {
+          ".validate": "(newData.isNumber() && newData.val() >= 1 && newData.val() <= 52) || (newData.isString() && newData.val().length <= 50)"
+        },
+        "trainingsCount": {
+          ".validate": "(newData.isNumber() && newData.val() >= 0 && newData.val() <= 200) || (newData.isString() && newData.val().length <= 50)"
+        },
+        "stripeColorHex": {
+          ".validate": "newData.isString() && newData.val().matches(/^#[0-9A-Fa-f]{6}$/) || !newData.exists()"
+        },
+        "shortDescription": {
+          ".validate": "newData.isString() && newData.val().length <= 500 || !newData.exists()"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber() || !newData.exists()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      },
+      ".indexOn": ["level", "weeks"]
+    },
+
+    "planTemplates": {
+      ".read": "auth != null",
+      ".write": false,
+      "$templateId": {
+        ".validate": "newData.hasChildren(['title','level','weeks'])",
+        "id": {
+          ".validate": "newData.isString()"
+        },
+        "title": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+        },
+        "level": {
+          ".validate": "newData.isString() && newData.val().matches(/^(beginner|intermediate|advanced)$/)"
+        },
+        "weeks": {
+          ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 52"
+        },
+        "trainingsCount": {
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 200 || !newData.exists()"
+        },
+        "stripeColorHex": {
+          ".validate": "newData.isString() && newData.val().matches(/^#[0-9A-Fa-f]{6}$/) || !newData.exists()"
+        },
+        "shortDescription": {
+          ".validate": "newData.isString() && newData.val().length <= 500 || !newData.exists()"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber() || !newData.exists()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      },
+      ".indexOn": ["level", "weeks"]
+    },
+
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid",
+
+        "uid": {
+          ".validate": "newData.isString() && newData.val() === $uid"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length <= 100 || !newData.exists()"
+        },
+        "email": {
+          ".validate": "newData.isString() && newData.val().length <= 200 || !newData.exists()"
+        },
+        "photoUrl": {
+          ".validate": "newData.isString() && newData.val().length <= 500 || !newData.exists()"
+        },
+        "provider": {
+          ".validate": "newData.isString() && newData.val().matches(/^(google|password|facebook)$/) || !newData.exists()"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber() && !data.exists()"
+        },
+        "lastLoginAt": {
+          ".validate": "newData.isNumber()"
+        },
+
+        "profile": {
+          "fitnessLevel": {
+            ".validate": "newData.isString() && newData.val().matches(/^(beginner|intermediate|advanced)$/)"
+          },
+          "fitnessLevelUpdatedAt": {
+            ".validate": "newData.isNumber() || !newData.exists()"
+          },
+          "displayName": {
+            ".validate": "newData.isString() && newData.val().length <= 100 || !newData.exists()"
+          },
+          "age": {
+            ".validate": "newData.isNumber() && newData.val() >= 10 && newData.val() <= 120 || !newData.exists()"
+          },
+          "goal": {
+            ".validate": "newData.isString() && newData.val().matches(/^(weight_loss|muscle_gain|performance|health|endurance)$/) || !newData.exists()"
+          },
+          "obstacle": {
+            ".validate": "newData.isString() && newData.val().matches(/^(time|consistency|knowledge|injury|equipment|motivation)$/) || !newData.exists()"
+          },
+          "obstacleText": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 500 || !newData.exists()"
+          },
+          "sex": {
+            ".validate": "newData.isString() && newData.val().matches(/^(male|female)$/)"
+          },
+          "birthdate": {
+            ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)"
+          },
+          "weightKg": {
+            ".validate": "newData.isNumber() && newData.val() >= 30 && newData.val() <= 300"
+          },
+          "heightCm": {
+            ".validate": "newData.isNumber() && newData.val() >= 120 && newData.val() <= 250"
+          },
+          "bmi": {
+            ".validate": "newData.isNumber() && newData.val() >= 10 && newData.val() <= 60 || !newData.exists()"
+          },
+          "updatedAt": {
+            ".validate": "newData.isNumber() || !newData.exists()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+
+        "stats": {
+          "workouts": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 || !newData.exists()"
+          },
+          "trainings": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 || !newData.exists()"
+          },
+          "activeDays": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 || !newData.exists()"
+          },
+          "strengthWorkouts": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 || !newData.exists()"
+          },
+          "cardioWorkouts": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 || !newData.exists()"
+          },
+          "totalWeightLifted": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 || !newData.exists()"
+          },
+          "lastWorkoutAt": {
+            ".validate": "newData.isNumber() || !newData.exists()"
+          },
+          "lastTrainingAt": {
+            ".validate": "newData.isNumber() || !newData.exists()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+
+        "goals": {
+          "$goalId": {
+            ".validate": "newData.hasChildren(['title','targetValue','period','createdAt'])",
+            "id": {
+              ".validate": "newData.isString() && newData.val() === $goalId"
+            },
+            "title": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+            },
+            "description": {
+              ".validate": "newData.isString() && newData.val().length <= 300 || !newData.exists()"
+            },
+            "unit": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 20 || !newData.exists()"
+            },
+            "targetValue": {
+              ".validate": "newData.isNumber() && newData.val() > 0"
+            },
+            "currentValue": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 || !newData.exists()"
+            },
+            "period": {
+              ".validate": "newData.isString() && newData.val().matches(/^(total|daily|weekly|monthly)$/)"
+            },
+            "deadlineAt": {
+              ".validate": "newData.isNumber() || !newData.exists()"
+            },
+            "createdAt": {
+              ".validate": "newData.isNumber()"
+            },
+            "updatedAt": {
+              ".validate": "newData.isNumber() || !newData.exists()"
+            },
+            "completedAt": {
+              ".validate": "newData.isNumber() || !newData.exists()"
+            },
+            "$other": {
+              ".validate": false
+            }
+          },
+          ".indexOn": ["period", "createdAt", "completedAt"]
+        },
+
+        "achievements": {
+          "$achievementId": {
+            ".validate": "newData.hasChildren(['title','description','target','progress'])",
+            "id": {
+              ".validate": "newData.isString() && newData.val() === $achievementId"
+            },
+            "title": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+            },
+            "description": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 200"
+            },
+            "target": {
+              ".validate": "newData.isNumber() && newData.val() >= 1"
+            },
+            "progress": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "unlockedAt": {
+              ".validate": "newData.isNumber() || !newData.exists()"
+            },
+            "type": {
+              ".validate": "newData.isString() || !newData.exists()"
+            },
+            "$other": {
+              ".validate": false
+            }
+          },
+          ".indexOn": ["unlockedAt"]
+        },
+
+        "trainings": {
+          "$trainingId": {
+            ".validate": "newData.hasChildren(['title','timestamp'])",
+            "id": {
+              ".validate": "newData.isString() && newData.val() === $trainingId"
+            },
+            "title": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+            },
+            "timestamp": {
+              ".validate": "newData.isNumber()"
+            },
+            "createdAt": {
+              ".validate": "newData.isNumber() || !newData.exists()"
+            },
+            "updatedAt": {
+              ".validate": "newData.isNumber() || !newData.exists()"
+            },
+            "completedAt": {
+              ".validate": "newData.isNumber() || !newData.exists()"
+            },
+            "duration": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 || !newData.exists()"
+            },
+            "notes": {
+              ".validate": "newData.isString() && newData.val().length <= 500 || !newData.exists()"
+            },
+            "exercises": {
+              "$exerciseId": {
+                ".validate": "newData.hasChildren(['name','series','reps'])",
+                "id": {
+                  ".validate": "newData.isString()"
+                },
+                "name": {
+                  ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+                },
+                "series": {
+                  ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 20"
+                },
+                "reps": {
+                  ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 1000"
+                },
+                "weightKg": {
+                  ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000 || !newData.exists()"
+                },
+                "restSec": {
+                  ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 600 || !newData.exists()"
+                },
+                "muscle": {
+                  ".validate": "newData.isString() && newData.val().length <= 50 || !newData.exists()"
+                },
+                "notes": {
+                  ".validate": "newData.isString() && newData.val().length <= 200 || !newData.exists()"
+                },
+                "completed": {
+                  ".validate": "newData.isBoolean() || !newData.exists()"
+                },
+                "$other": {
+                  ".validate": false
+                }
+              }
+            },
+            "$other": {
+              ".validate": false
+            }
+          },
+          ".indexOn": ["timestamp", "completedAt", "createdAt"]
+        },
+
+        "workouts": {
+          "$workoutId": {
+            ".validate": "newData.hasChildren(['name','createdAt'])",
+            "id": {
+              ".validate": "newData.isString() && newData.val() === $workoutId"
+            },
+            "name": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+            },
+            "description": {
+              ".validate": "newData.isString() && newData.val().length <= 300 || !newData.exists()"
+            },
+            "createdAt": {
+              ".validate": "newData.isNumber()"
+            },
+            "updatedAt": {
+              ".validate": "newData.isNumber() || !newData.exists()"
+            },
+            "type": {
+              ".validate": "newData.isString() && newData.val().matches(/^(strength|cardio|flexibility|hiit|mixed)$/) || !newData.exists()"
+            },
+            "difficulty": {
+              ".validate": "newData.isString() && newData.val().matches(/^(beginner|intermediate|advanced)$/) || !newData.exists()"
+            },
+            "estimatedDuration": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 || !newData.exists()"
+            },
+            "exercises": {
+              "$exId": {
+                ".validate": "newData.hasChildren(['name','sets','reps'])",
+                "id": {
+                  ".validate": "newData.isString()"
+                },
+                "name": {
+                  ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+                },
+                "sets": {
+                  ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 20"
+                },
+                "reps": {
+                  ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 1000"
+                },
+                "weightKg": {
+                  ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000 || !newData.exists()"
+                },
+                "restSec": {
+                  ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 600 || !newData.exists()"
+                },
+                "muscle": {
+                  ".validate": "newData.isString() && newData.val().length <= 50 || !newData.exists()"
+                },
+                "equipment": {
+                  ".validate": "newData.isString() && newData.val().length <= 50 || !newData.exists()"
+                },
+                "notes": {
+                  ".validate": "newData.isString() && newData.val().length <= 200 || !newData.exists()"
+                },
+                "$other": {
+                  ".validate": false
+                }
+              }
+            },
+            "$other": {
+              ".validate": false
+            }
+          },
+          ".indexOn": ["createdAt", "updatedAt", "type", "difficulty"]
+        },
+
+        "plans": {
+          "$planId": {
+            ".validate": "newData.hasChildren(['title','level'])",
+            "id": {
+              ".validate": "newData.isString() && newData.val() === $planId"
+            },
+            "title": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+            },
+            "level": {
+              ".validate": "newData.isString()"
+            },
+            "weeks": {
+              ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 52"
+            },
+            "workoutsCount": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 || !newData.exists()"
+            },
+            "trainingsCount": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 || !newData.exists()"
+            },
+            "stripeColorHex": {
+              ".validate": "newData.isString() && newData.val().matches(/^#[0-9A-Fa-f]{6}$/) || !newData.exists()"
+            },
+            "shortDescription": {
+              ".validate": "newData.isString() && newData.val().length <= 500 || !newData.exists()"
+            },
+            "createdAt": {
+              ".validate": "newData.isNumber()"
+            },
+            "updatedAt": {
+              ".validate": "newData.isNumber() || !newData.exists()"
+            },
+            "startedAt": {
+              ".validate": "newData.isNumber() || !newData.exists()"
+            },
+            "completedAt": {
+              ".validate": "newData.isNumber() || !newData.exists()"
+            },
+            "isActive": {
+              ".validate": "newData.isBoolean() || !newData.exists()"
+            },
+            "sessions": {
+              "$week": {
+                "$sessionId": {
+                  ".validate": "newData.hasChildren(['workoutId'])",
+                  "workoutId": {
+                    ".validate": "newData.isString() && newData.val().length > 0"
+                  },
+                  "trainingId": {
+                    ".validate": "newData.isString() && newData.val().length > 0 || !newData.exists()"
+                  },
+                  "dayOfWeek": {
+                    ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 7 || !newData.exists()"
+                  },
+                  "completedAt": {
+                    ".validate": "newData.isNumber() || !newData.exists()"
+                  },
+                  "$other": {
+                    ".validate": false
+                  }
+                }
+              }
+            },
+            "$other": {
+              ".validate": false
+            }
+          },
+          ".indexOn": ["level", "createdAt", "isActive", "startedAt"]
+        },
+
+        "history": {
+          "$historyId": {
+            ".validate": "newData.hasChildren(['type','timestamp'])",
+            "id": {
+              ".validate": "newData.isString() && newData.val() === $historyId"
+            },
+            "type": {
+              ".validate": "newData.isString() && newData.val().matches(/^(training|workout|goal|achievement|weight)$/)"
+            },
+            "timestamp": {
+              ".validate": "newData.isNumber()"
+            },
+            "trainingId": {
+              ".validate": "newData.isString() || !newData.exists()"
+            },
+            "workoutId": {
+              ".validate": "newData.isString() || !newData.exists()"
+            },
+            "goalId": {
+              ".validate": "newData.isString() || !newData.exists()"
+            },
+            "data": {
+              ".validate": "newData.isString() && newData.val().length <= 1000 || !newData.exists()"
+            },
+            "$other": {
+              ".validate": false
+            }
+          },
+          ".indexOn": ["type", "timestamp"]
+        },
+
+        "settings": {
+          "notifications": {
+            ".validate": "newData.isBoolean() || !newData.exists()"
+          },
+          "reminderTime": {
+            ".validate": "newData.isString() && newData.val().matches(/^[0-9]{2}:[0-9]{2}$/) || !newData.exists()"
+          },
+          "units": {
+            ".validate": "newData.isString() && newData.val().matches(/^(metric|imperial)$/) || !newData.exists()"
+          },
+          "theme": {
+            ".validate": "newData.isString() && newData.val().matches(/^(light|dark|auto)$/) || !newData.exists()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+
+        "$other": {
+          ".validate": false
+        }
+      }
+    }
+  }
+}
