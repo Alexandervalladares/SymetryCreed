@@ -1,6 +1,6 @@
 Desarrollo de Software para Móviles DSM441 G01T
 
-### SymetryCreed
+# SymetryCreed
 Aplicación Móvil para Creación de Rutinas de Ejercicio Personalizadas
 y Seguimiento de Progreso Físico
 
