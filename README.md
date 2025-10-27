@@ -9,8 +9,11 @@ https://trello.com/invite/b/6892b75732cfabfc43fc5d0c/ATTI0679088867681c608ab3e24
 
 ## INTEGRANTES
 Alexander Antonio Valladares Alvarado  -  VA230394
+
 Carlos Josue Ruano Batres  -  RB230288
+
 Adriel Caleb Montano Lemus  -  ML232940
+
 Carlos Mauricio López García  -  LG151035 
 
 ## DOCUMENTO FASE FINAL
