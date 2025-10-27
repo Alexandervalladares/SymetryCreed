@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    id("kotlin-parcelize")  // ✅ AGREGAR: Para @Parcelize
 }
 
 android {
@@ -47,10 +48,10 @@ dependencies {
 
     // Firebase (sin versión explícita)
     implementation("com.google.firebase:firebase-auth-ktx")
-
+    implementation("androidx.activity:activity-ktx:1.8.0")
     // Google Sign-In
     implementation("com.google.android.gms:play-services-auth:21.2.0")
-
+    implementation("androidx.compose.material:material-icons-extended:1.6.0")
     // Credenciales (One Tap)
     implementation("androidx.credentials:credentials:1.5.0")
     implementation("androidx.credentials:credentials-play-services-auth:1.5.0")

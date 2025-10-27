@@ -23,5 +23,7 @@
     <color name="cyan">#811818</color> <!-- botón principal -->
     <color name="cyan_dark">@color/gray_box_selected</color> <!-- badge text color -->
     <color name="badgeBackground">@color/hint</color>
+    <color name="gray_divider">#2A2A2A</color>
+
 
 </resources>

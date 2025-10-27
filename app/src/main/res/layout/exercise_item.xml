@@ -1,151 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Item UI que se crea/inserta dinámicamente en ExercisesActivity -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/exercise_item_root"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/bg_card"
-    android:padding="12dp"
-    android:layout_marginBottom="12dp">
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/gray_box"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvExerciseLabel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Ejercicio"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"/>
-
-        <TextView
-            android:id="@+id/btnRemoveExercise"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Eliminar"
-            android:textColor="#FF6666"
-            android:padding="6dp"/>
-    </LinearLayout>
-
-    <EditText
-        android:id="@+id/edtExerciseName"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:hint="Nombre del ejercicio"
-        android:background="@drawable/bg_card_small"
-        android:padding="8dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="#9FA3A7"
-        android:layout_marginTop="8dp"/>
-
-    <!-- Row: Series / Reps / Peso -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
-
-        <!-- Series -->
+        <!-- Header: Label Ejercicio y Botón Eliminar -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ejercicio"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btnRemoveExercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Eliminar"
+                android:textColor="@color/red_accent"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+        </LinearLayout>
+
+        <!-- Nombre del ejercicio -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre del ejercicio"
+            app:hintTextColor="@color/textSecondary"
+            app:boxStrokeColor="@color/red_accent"
+            app:boxStrokeWidth="1dp"
+            android:layout_marginBottom="12dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtExerciseName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:maxLength="80"
+                android:textColor="@color/white"
+                android:textColorHint="@color/textSecondary"
+                android:textSize="15sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Series y Reps -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <!-- Series -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginEnd="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Series:"
+                    android:textColor="@color/textSecondary"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="6dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/counter_background"
+                    android:padding="4dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSeriesMinus"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="−"
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/red_accent"
+                        app:cornerRadius="8dp" />
+
+                    <TextView
+                        android:id="@+id/tvSeries"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="3"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSeriesPlus"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="+"
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/red_accent"
+                        app:cornerRadius="8dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Reps -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reps:"
+                    android:textColor="@color/textSecondary"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="6dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/counter_background"
+                    android:padding="4dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRepsMinus"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="−"
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/red_accent"
+                        app:cornerRadius="8dp" />
+
+                    <TextView
+                        android:id="@+id/tvReps"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="10"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRepsPlus"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="+"
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/red_accent"
+                        app:cornerRadius="8dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Peso -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Series: "
-                android:textColor="@android:color/white" />
+                android:text="Peso (kg):"
+                android:textColor="@color/textSecondary"
+                android:textSize="13sp"
+                android:layout_marginBottom="6dp" />
 
-            <Button
-                android:id="@+id/btnSeriesMinus"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:text="-" />
-
-            <TextView
-                android:id="@+id/tvSeries"
-                android:layout_width="36dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="3"
-                android:textColor="@android:color/white" />
+                app:boxStrokeColor="@color/red_accent"
+                app:boxStrokeWidth="1dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-            <Button
-                android:id="@+id/btnSeriesPlus"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:text="+" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:hint="0.0"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/textSecondary"
+                    android:textSize="15sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
 
-        <!-- Reps -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reps: "
-                android:textColor="@android:color/white" />
-
-            <Button
-                android:id="@+id/btnRepsMinus"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:text="-" />
-
-            <TextView
-                android:id="@+id/tvReps"
-                android:layout_width="36dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="10"
-                android:textColor="@android:color/white" />
-
-            <Button
-                android:id="@+id/btnRepsPlus"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:text="+" />
-        </LinearLayout>
     </LinearLayout>
 
-    <!-- Peso (kg) simple -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Peso (kg): "
-            android:textColor="@android:color/white" />
-
-        <EditText
-            android:id="@+id/edtWeight"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:inputType="numberDecimal"
-            android:ems="6"
-            android:background="@drawable/bg_card_small"
-            android:padding="6dp"
-            android:textColor="@android:color/white"
-            android:text="0" />
-    </LinearLayout>
-
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

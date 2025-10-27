@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.app.symetrycreed.R
 import com.app.symetrycreed.model.Exercise
 import com.app.symetrycreed.model.Training
-import java.util.*
 
 class TrainingActivity : AppCompatActivity() {
 
@@ -15,89 +14,185 @@ class TrainingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_training)
 
-        // IDs del layout (asegúrate de tenerlos en activity_training.xml)
-        val btnNewTraining = findViewById<View>(R.id.btnNewTraining)
-        val optRutinaRapida = findViewById<View>(R.id.opt_rutina_rapida)
-        val optTemporizador = findViewById<View>(R.id.opt_temporizador)
-        val btnComenzar1 = findViewById<View>(R.id.btn_comenzar_1)
-        val btnComenzar2 = findViewById<View>(R.id.btn_comenzar_2)
+        setupClickListeners()
+    }
 
-        // BOTÓN: abre ExercisesActivity vacío (editable) para crear nuevo entrenamiento
-        btnNewTraining.setOnClickListener {
-            // abrir ExercisesActivity sin datos => nuevo entrenamiento vacío
+    private fun setupClickListeners() {
+        // Nuevo Entrenamiento
+        findViewById<View>(R.id.btnNewTraining)?.setOnClickListener {
+            android.util.Log.d("TrainingActivity", "Click: Nuevo Entrenamiento")
             val intent = Intent(this, ExercisesActivity::class.java)
             startActivity(intent)
         }
 
-        // RUTINA RÁPIDA: genera un training predefinido y abre ExercisesActivity con datos
-        optRutinaRapida.setOnClickListener {
+        // Rutina Rápida
+        findViewById<View>(R.id.opt_rutina_rapida)?.setOnClickListener {
+            android.util.Log.d("TrainingActivity", "Click: Rutina Rápida")
             val training = buildQuickTraining()
             openExercisesWithTraining(training)
         }
 
-        // TEMPORIZADOR: abre TimerActivity (simple countdown)
-        optTemporizador.setOnClickListener {
+        // Temporizador
+        findViewById<View>(R.id.opt_temporizador)?.setOnClickListener {
+            android.util.Log.d("TrainingActivity", "Click: Temporizador")
             val intent = Intent(this, TimerActivity::class.java)
             startActivity(intent)
         }
 
-        // Suggested cards: Comenzar -> abrir Exercises con training sugerido
-        btnComenzar1.setOnClickListener {
+        // Sugerido 1: HIIT
+        findViewById<View>(R.id.btn_comenzar_1)?.setOnClickListener {
+            android.util.Log.d("TrainingActivity", "Click: Comenzar HIIT")
             val training = buildSuggestedHiit()
             openExercisesWithTraining(training)
         }
-        btnComenzar2.setOnClickListener {
+
+        // Sugerido 2: Fuerza Superior
+        findViewById<View>(R.id.btn_comenzar_2)?.setOnClickListener {
+            android.util.Log.d("TrainingActivity", "Click: Comenzar Fuerza")
             val training = buildSuggestedStrength()
             openExercisesWithTraining(training)
         }
     }
 
     private fun openExercisesWithTraining(training: Training) {
-        val i = Intent(this, ExercisesActivity::class.java)
-        i.putExtra("training", training)
-        startActivity(i)
+        val intent = Intent(this, ExercisesActivity::class.java)
+        intent.putExtra("training", training)
+        startActivity(intent)
     }
 
-    // Ejemplo: rutina rápida generada dinámicamente
+    // ========== ENTRENAMIENTOS PREDEFINIDOS ==========
+
     private fun buildQuickTraining(): Training {
-        val list = listOf(
-            Exercise(name = "Jumping Jacks", series = 3, reps = 20),
-            Exercise(name = "Push Ups", series = 3, reps = 12),
-            Exercise(name = "Squats", series = 3, reps = 15)
+        val currentTime = System.currentTimeMillis()
+        val exercises = listOf(
+            Exercise(
+                id = "",
+                name = "Jumping Jacks",
+                series = 3,
+                reps = 20,
+                weightKg = 0.0,
+                muscle = "cardio",
+                restSec = 30
+            ),
+            Exercise(
+                id = "",
+                name = "Push Ups",
+                series = 3,
+                reps = 12,
+                weightKg = 0.0,
+                muscle = "chest",
+                restSec = 60
+            ),
+            Exercise(
+                id = "",
+                name = "Squats",
+                series = 3,
+                reps = 15,
+                weightKg = 0.0,
+                muscle = "legs",
+                restSec = 60
+            )
         )
+
         return Training(
-            id = UUID.randomUUID().toString(),
+            id = "",
             title = "Rutina Rápida",
-            timestamp = System.currentTimeMillis(),
-            exercises = list
+            timestamp = currentTime,
+            createdAt = currentTime,
+            exercises = exercises,
+            notes = "Entrenamiento rápido y efectivo"
         )
     }
 
     private fun buildSuggestedHiit(): Training {
-        val list = listOf(
-            Exercise(name = "Burpees", series = 4, reps = 12),
-            Exercise(name = "Mountain Climbers", series = 4, reps = 20),
-            Exercise(name = "High Knees", series = 4, reps = 30)
+        val currentTime = System.currentTimeMillis()
+        val exercises = listOf(
+            Exercise(
+                id = "",
+                name = "Burpees",
+                series = 4,
+                reps = 12,
+                weightKg = 0.0,
+                muscle = "full body",
+                restSec = 60,
+                notes = "Mantén el ritmo constante"
+            ),
+            Exercise(
+                id = "",
+                name = "Mountain Climbers",
+                series = 4,
+                reps = 20,
+                weightKg = 0.0,
+                muscle = "core",
+                restSec = 45,
+                notes = "Abdomen contraído"
+            ),
+            Exercise(
+                id = "",
+                name = "High Knees",
+                series = 4,
+                reps = 30,
+                weightKg = 0.0,
+                muscle = "cardio",
+                restSec = 60,
+                notes = "Rodillas arriba"
+            )
         )
+
         return Training(
-            id = UUID.randomUUID().toString(),
+            id = "",
             title = "Entrenamiento Rápido",
-            timestamp = System.currentTimeMillis(),
-            exercises = list
+            timestamp = currentTime,
+            createdAt = currentTime,
+            exercises = exercises,
+            notes = "Entrenamiento HIIT de alta intensidad",
+            duration = 20
         )
     }
 
     private fun buildSuggestedStrength(): Training {
-        val list = listOf(
-            Exercise(name = "Bench Press", series = 4, reps = 10, weightKg = 40.0),
-            Exercise(name = "Dumbbell Row", series = 4, reps = 10, weightKg = 22.5),
-            Exercise(name = "Shoulder Press", series = 3, reps = 12, weightKg = 18.0)
+        val currentTime = System.currentTimeMillis()
+        val exercises = listOf(
+            Exercise(
+                id = "",
+                name = "Bench Press",
+                series = 4,
+                reps = 10,
+                weightKg = 40.0,
+                muscle = "chest",
+                restSec = 90,
+                notes = "Controla el descenso"
+            ),
+            Exercise(
+                id = "",
+                name = "Dumbbell Row",
+                series = 4,
+                reps = 10,
+                weightKg = 22.5,
+                muscle = "back",
+                restSec = 90,
+                notes = "Mantén la espalda recta"
+            ),
+            Exercise(
+                id = "",
+                name = "Shoulder Press",
+                series = 3,
+                reps = 12,
+                weightKg = 18.0,
+                muscle = "shoulders",
+                restSec = 75,
+                notes = "No arquees la espalda"
+            )
         )
+
         return Training(
-            id = UUID.randomUUID().toString(),
+            id = "",
             title = "Fuerza Superior",
-            timestamp = System.currentTimeMillis(),
-            exercises = list
+            timestamp = currentTime,
+            createdAt = currentTime,
+            exercises = exercises,
+            notes = "Enfoque en tren superior",
+            duration = 30
         )
     }
 }

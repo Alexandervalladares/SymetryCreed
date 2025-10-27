@@ -25,7 +25,6 @@ class ObstacleTextActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener { finish() }
         binding.btnContinue.isEnabled = false
 
-        // Habilitar botón cuando hay texto
         binding.etObstacle.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) = Unit
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
@@ -37,24 +36,33 @@ class ObstacleTextActivity : AppCompatActivity() {
         binding.btnContinue.setOnClickListener {
             val uid = auth.currentUser?.uid ?: return@setOnClickListener
             val text = binding.etObstacle.text?.toString()?.trim().orEmpty()
-            if (text.isBlank()) return@setOnClickListener
+
+            if (text.isBlank()) {
+                Snackbar.make(binding.root, "Escribe algo", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // ✅ VALIDACIÓN: longitud máxima 500 según las rules
+            if (text.length > 500) {
+                Snackbar.make(binding.root, "Texto muy largo (máx 500 caracteres)", Snackbar.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
 
             binding.btnContinue.isEnabled = false
 
+            // ✅ CORRECCIÓN: Usar path correcto profile/obstacleText
             val updates = mapOf(
-                "obstacleText" to text,
-                "updatedAt" to ServerValue.TIMESTAMP
+                "profile/obstacleText" to text,
+                "profile/updatedAt" to ServerValue.TIMESTAMP
             )
 
-            db.child("users").child(uid).child("profile")
+            db.child("users").child(uid)
                 .updateChildren(updates)
                 .addOnCompleteListener { task ->
                     binding.btnContinue.isEnabled = true
                     if (task.isSuccessful) {
-                        // Feedback opcional
                         Snackbar.make(binding.root, "Guardado ✓", Snackbar.LENGTH_SHORT).show()
-                        // Ir a Información Personal
-                        startActivity(Intent(this, com.app.symetrycreed.ui.profile.PersonalInfoActivity::class.java))
+                        startActivity(Intent(this, PersonalInfoActivity::class.java))
                         finish()
                     } else {
                         Snackbar.make(binding.root, "Error al guardar", Snackbar.LENGTH_LONG).show()

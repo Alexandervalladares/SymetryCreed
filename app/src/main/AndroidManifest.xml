@@ -18,8 +18,46 @@
         <activity android:name=".ui.training.TrainingActivity" android:exported="false" />
         <activity android:name=".ui.training.ExercisesActivity" android:exported="false" />
         <activity android:name=".ui.training.TimerActivity" android:exported="false" />
-        <activity android:name=".ui.training.RoutinesActivity" android:exported="false" />
+        <activity android:name=".ui.training.RoutinesActivity" android:exported="false" /><!-- Profile y relacionadas -->
+        <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.profile.EditProfileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.achievements.AchievementsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.help.HelpActivity"
+            android:exported="false" />
+
         <!-- Añadir dentro de <application> -->
+
+        <activity
+            android:name=".ui.progress.ProgressActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.goals.GoalsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.exercises.ExerciseDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.plans.UserPlansActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.exercises.ExerciseLibraryActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.training.GenerateTrainingActivity"
             android:exported="false"

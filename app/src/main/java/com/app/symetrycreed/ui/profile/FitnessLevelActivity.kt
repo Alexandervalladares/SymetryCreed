@@ -1,6 +1,6 @@
 package com.app.symetrycreed.ui.profile
 
-import android.content.Intent                         // 👈 IMPORTANTE
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.app.symetrycreed.R
@@ -27,23 +27,35 @@ class FitnessLevelActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener { finish() }
         binding.btnContinue.isEnabled = false
 
-        binding.cardBeginner.setOnClickListener { select(binding.cardBeginner, "beginner") }
-        binding.cardIntermediate.setOnClickListener { select(binding.cardIntermediate, "intermediate") }
-        binding.cardAdvanced.setOnClickListener { select(binding.cardAdvanced, "advanced") }
+        binding.cardBeginner.setOnClickListener {
+            select(binding.cardBeginner, "beginner")  // ✅ lowercase
+        }
+        binding.cardIntermediate.setOnClickListener {
+            select(binding.cardIntermediate, "intermediate")  // ✅ lowercase
+        }
+        binding.cardAdvanced.setOnClickListener {
+            select(binding.cardAdvanced, "advanced")  // ✅ lowercase
+        }
 
         binding.btnContinue.setOnClickListener {
             val uid = auth.currentUser?.uid
             val level = selectedLevel
             if (uid == null || level == null) return@setOnClickListener
 
+            // ✅ VALIDACIÓN: level debe coincidir con el regex de las rules
+            if (level !in listOf("beginner", "intermediate", "advanced")) {
+                Snackbar.make(binding.root, "Nivel inválido", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             binding.btnContinue.isEnabled = false
             val userRef = db.child("users").child(uid)
 
-            // 1) Verificar si ya existe el usuario
             userRef.get().addOnSuccessListener { snapshot ->
                 if (!snapshot.exists()) {
-                    // Crear estructura inicial
+                    // ✅ CREAR: Usuario nuevo con estructura correcta
                     val newUser = mapOf(
+                        "uid" to uid,  // ✅ Campo requerido
                         "createdAt" to ServerValue.TIMESTAMP,
                         "lastLoginAt" to ServerValue.TIMESTAMP,
                         "profile" to mapOf(
@@ -52,24 +64,20 @@ class FitnessLevelActivity : AppCompatActivity() {
                         )
                     )
                     userRef.setValue(newUser)
-                        .addOnSuccessListener {
-                            goNext() // 👈 avanzar
-                        }
+                        .addOnSuccessListener { goNext() }
                         .addOnFailureListener { e ->
                             binding.btnContinue.isEnabled = true
                             Snackbar.make(binding.root, "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
                         }
                 } else {
-                    // Actualizar solo el perfil
+                    // ✅ ACTUALIZAR: Solo el perfil
                     val updates = mapOf(
                         "lastLoginAt" to ServerValue.TIMESTAMP,
                         "profile/fitnessLevel" to level,
                         "profile/fitnessLevelUpdatedAt" to ServerValue.TIMESTAMP
                     )
                     userRef.updateChildren(updates)
-                        .addOnSuccessListener {
-                            goNext() // 👈 avanzar
-                        }
+                        .addOnSuccessListener { goNext() }
                         .addOnFailureListener { e ->
                             binding.btnContinue.isEnabled = true
                             Snackbar.make(binding.root, "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
@@ -85,12 +93,9 @@ class FitnessLevelActivity : AppCompatActivity() {
     }
 
     private fun goNext() {
-        // (Opcional) feedback rápido
         Snackbar.make(binding.root, "Estado guardado ✓", Snackbar.LENGTH_SHORT).show()
-
-        // Navegar a la pantalla de “Mayor Obstáculo (texto)”
         startActivity(Intent(this, ObstacleTextActivity::class.java))
-        finish() // cierra esta pantalla para no volver con back
+        finish()
     }
 
     private fun select(card: MaterialCardView, value: String) {

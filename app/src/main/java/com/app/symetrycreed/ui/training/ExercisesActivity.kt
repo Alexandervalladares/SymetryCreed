@@ -22,24 +22,31 @@ class ExercisesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercises)
 
+        initViews()
+        loadTrainingData()
+        setupListeners()
+    }
+
+    private fun initViews() {
         containerExercises = findViewById(R.id.containerExercises)
         btnAddExercise = findViewById(R.id.btnAddExercise)
         btnSaveTraining = findViewById(R.id.btnSaveTraining)
         edtTrainingTitle = findViewById(R.id.edtTrainingTitle)
+    }
 
-        // Si se pasó un training por Intent: prellenarlo
-        val trainingExtra = intent.getSerializableExtra("training") as? Training
+    private fun loadTrainingData() {
+        val trainingExtra = intent.getParcelableExtra<Training>("training")
         if (trainingExtra != null) {
             edtTrainingTitle.setText(trainingExtra.title)
-            // agregar exercises desde trainingExtra
             for (ex in trainingExtra.exercises) {
                 addExerciseView(prefill = ex)
             }
         } else {
-            // un ejercicio por defecto
             addExerciseView()
         }
+    }
 
+    private fun setupListeners() {
         btnAddExercise.setOnClickListener {
             addExerciseView()
         }
@@ -53,7 +60,6 @@ class ExercisesActivity : AppCompatActivity() {
         val inflater = LayoutInflater.from(this)
         val item = inflater.inflate(R.layout.exercise_item, containerExercises, false)
 
-        // Referencias dentro del item
         val edtName = item.findViewById<EditText>(R.id.edtExerciseName)
         val tvSeries = item.findViewById<TextView>(R.id.tvSeries)
         val tvReps = item.findViewById<TextView>(R.id.tvReps)
@@ -79,7 +85,7 @@ class ExercisesActivity : AppCompatActivity() {
 
         btnSeriesPlus.setOnClickListener {
             var v = safeParseInt(tvSeries)
-            v++
+            if (v < 20) v++
             tvSeries.text = v.toString()
         }
         btnSeriesMinus.setOnClickListener {
@@ -89,7 +95,7 @@ class ExercisesActivity : AppCompatActivity() {
         }
         btnRepsPlus.setOnClickListener {
             var v = safeParseInt(tvReps)
-            v++
+            if (v < 1000) v++
             tvReps.text = v.toString()
         }
         btnRepsMinus.setOnClickListener {
@@ -103,30 +109,41 @@ class ExercisesActivity : AppCompatActivity() {
         }
 
         containerExercises.addView(item)
-        // Scroll to bottom
-        containerExercises.post { (containerExercises.parent as? ScrollView)?.fullScroll(View.FOCUS_DOWN) }
+        containerExercises.post {
+            (containerExercises.parent as? ScrollView)?.fullScroll(View.FOCUS_DOWN)
+        }
     }
 
     private fun saveTrainingToFirebase() {
         val title = edtTrainingTitle.text.toString().trim()
+
         if (title.isEmpty()) {
             Toast.makeText(this, "Ingresa el título del entrenamiento", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (title.length > 80) {
+            Toast.makeText(this, "El título es muy largo (máx 80 caracteres)", Toast.LENGTH_SHORT).show()
             return
         }
 
         val exercises = mutableListOf<Exercise>()
         for (i in 0 until containerExercises.childCount) {
             val item = containerExercises.getChildAt(i)
-            val name = (item.findViewById<View>(R.id.edtExerciseName) as EditText).text.toString().trim()
-            val series = (item.findViewById<View>(R.id.tvSeries) as TextView).text.toString().toIntOrNull() ?: 0
-            val reps = (item.findViewById<View>(R.id.tvReps) as TextView).text.toString().toIntOrNull() ?: 0
-            val weightStr = (item.findViewById<View>(R.id.edtWeight) as EditText).text.toString().trim()
+            val name = (item.findViewById<View>(R.id.edtExerciseName) as EditText)
+                .text.toString().trim()
+            val series = (item.findViewById<View>(R.id.tvSeries) as TextView)
+                .text.toString().toIntOrNull() ?: 0
+            val reps = (item.findViewById<View>(R.id.tvReps) as TextView)
+                .text.toString().toIntOrNull() ?: 0
+            val weightStr = (item.findViewById<View>(R.id.edtWeight) as EditText)
+                .text.toString().trim()
             val weight = weightStr.toDoubleOrNull() ?: 0.0
 
             if (name.isBlank()) {
                 Toast.makeText(this, "Llena el nombre de todos los ejercicios", Toast.LENGTH_SHORT).show()
                 return
             }
+
             val ex = Exercise(
                 id = "",
                 name = name,
@@ -134,6 +151,12 @@ class ExercisesActivity : AppCompatActivity() {
                 reps = reps,
                 weightKg = weight
             )
+
+            if (!ex.isValid()) {
+                Toast.makeText(this, "Ejercicio '$name' tiene datos inválidos", Toast.LENGTH_SHORT).show()
+                return
+            }
+
             exercises.add(ex)
         }
 
@@ -144,7 +167,7 @@ class ExercisesActivity : AppCompatActivity() {
 
         val user = FirebaseAuth.getInstance().currentUser
         if (user == null) {
-            Toast.makeText(this, "Debes iniciar sesión para guardar el entrenamiento", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Debes iniciar sesión", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -156,23 +179,52 @@ class ExercisesActivity : AppCompatActivity() {
         val newRef = dbRef.push()
         val trainingId = newRef.key ?: return
 
-        val training = Training(
-            id = trainingId,
-            title = title,
-            timestamp = System.currentTimeMillis(),
-            exercises = exercises
-        )
-
         btnSaveTraining.isEnabled = false
 
-        newRef.setValue(training)
+        val currentTime = System.currentTimeMillis()
+
+        val trainingData = hashMapOf<String, Any>(
+            "id" to trainingId,
+            "title" to title,
+            "timestamp" to currentTime,
+            "createdAt" to currentTime
+        )
+
+        val exercisesMap = hashMapOf<String, Any>()
+        exercises.forEachIndexed { index, exercise ->
+            val exerciseId = "ex_${System.currentTimeMillis()}_$index"
+            exercise.id = exerciseId
+            exercisesMap[exerciseId] = exercise.toMap()
+        }
+
+        trainingData["exercises"] = exercisesMap
+
+        newRef.setValue(trainingData)
             .addOnSuccessListener {
-                Toast.makeText(this, "Entrenamiento guardado", Toast.LENGTH_SHORT).show()
+                updateUserStats(user.uid)
+                Toast.makeText(this, "✓ Entrenamiento guardado", Toast.LENGTH_SHORT).show()
                 finish()
             }
             .addOnFailureListener { ex ->
-                Toast.makeText(this, "Error al guardar: ${ex.message}", Toast.LENGTH_LONG).show()
                 btnSaveTraining.isEnabled = true
+                Toast.makeText(this, "Error: ${ex.message}", Toast.LENGTH_LONG).show()
+                android.util.Log.e("ExercisesActivity", "Error guardando: ${ex.message}", ex)
             }
+    }
+
+    private fun updateUserStats(uid: String) {
+        val statsRef = FirebaseDatabase.getInstance().reference
+            .child("users")
+            .child(uid)
+            .child("stats")
+
+        statsRef.child("trainings").get().addOnSuccessListener { snapshot ->
+            val currentCount = snapshot.getValue(Int::class.java) ?: 0
+            val updates = hashMapOf<String, Any>(
+                "trainings" to (currentCount + 1),
+                "lastTrainingAt" to System.currentTimeMillis()
+            )
+            statsRef.updateChildren(updates)
+        }
     }
 }
