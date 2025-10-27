@@ -11,6 +11,7 @@
     <color name="teal_200">#851019</color>
     <color name="background_dark">#121212</color>
     <color name="gray_box_selected">#401919</color>
+    <color name="green_completed">#4CAF50</color>
 
     <color name="stripe_red">#FF5160</color>
     <color name="stripe_teal">#3DE1C8</color>

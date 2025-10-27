@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_dark">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Header -->
+            <TextView
+                android:id="@+id/tvTrainingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Entrenamiento"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Contador de ejercicios -->
+            <TextView
+                android:id="@+id/tvExerciseCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1/5"
+                android:textColor="@color/textSecondary"
+                android:textSize="16sp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Barra de progreso -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:progress="0"
+                android:max="100"
+                android:progressTint="@color/red_accent"
+                android:progressBackgroundTint="@color/gray_box"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Card del ejercicio actual -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="@color/gray_box"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <!-- Nombre del ejercicio -->
+                    <TextView
+                        android:id="@+id/tvCurrentExerciseName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Press de Banca"
+                        android:textColor="@color/white"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Info del ejercicio -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:id="@+id/tvCurrentSeries"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Series: 3"
+                            android:textColor="@color/textSecondary"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tvCurrentReps"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Reps: 10"
+                            android:textColor="@color/textSecondary"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvCurrentWeight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="40kg"
+                        android:textColor="@color/cyan"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Timer de descanso -->
+                    <TextView
+                        android:id="@+id/tvRestTimer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Descanso: 60s"
+                        android:textColor="@color/red_accent"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:background="@drawable/timer_background"
+                        android:visibility="gone"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Indicadores de series -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Series:"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:id="@+id/containerSeries"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" />
+
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Botón completar serie -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCompleteSet"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:text="Completar Serie 1"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/red_accent"
+                app:cornerRadius="12dp"
+                app:icon="@android:drawable/checkbox_on_background"
+                app:iconTint="@color/white"
+                app:iconGravity="textStart"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Navegación de ejercicios -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPreviousExercise"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="Anterior"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/gray_box"
+                    app:cornerRadius="12dp"
+                    app:icon="@android:drawable/ic_media_previous"
+                    app:iconTint="@color/white"
+                    app:iconGravity="textStart" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNextExercise"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="Siguiente"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/gray_box"
+                    app:cornerRadius="12dp"
+                    app:icon="@android:drawable/ic_media_next"
+                    app:iconTint="@color/white"
+                    app:iconGravity="end" />
+
+            </LinearLayout>
+
+            <!-- Botón finalizar -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFinishTraining"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Finalizar Entrenamiento"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/cyan"
+                app:cornerRadius="12dp"
+                app:icon="@android:drawable/ic_menu_save"
+                app:iconTint="@color/white"
+                app:iconGravity="textStart"
+                android:layout_marginBottom="32dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

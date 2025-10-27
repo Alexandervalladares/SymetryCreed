@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -30,7 +31,11 @@
         <activity
             android:name=".ui.achievements.AchievementsActivity"
             android:exported="false" />
-
+        <!-- ADD THIS -->
+        <activity
+            android:name=".ui.training.ActiveTrainingActivity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:exported="false" />

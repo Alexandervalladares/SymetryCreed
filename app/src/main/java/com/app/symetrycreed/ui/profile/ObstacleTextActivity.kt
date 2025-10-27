@@ -42,7 +42,6 @@ class ObstacleTextActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // ✅ VALIDACIÓN: longitud máxima 500 según las rules
             if (text.length > 500) {
                 Snackbar.make(binding.root, "Texto muy largo (máx 500 caracteres)", Snackbar.LENGTH_LONG).show()
                 return@setOnClickListener
@@ -50,14 +49,12 @@ class ObstacleTextActivity : AppCompatActivity() {
 
             binding.btnContinue.isEnabled = false
 
-            // ✅ CORRECCIÓN: Usar path correcto profile/obstacleText
-            val updates = mapOf(
-                "profile/obstacleText" to text,
-                "profile/updatedAt" to ServerValue.TIMESTAMP
-            )
+            val userRef = db.child("users").child(uid)
+            val profileRef = userRef.child("profile")
 
-            db.child("users").child(uid)
-                .updateChildren(updates)
+            // Usar setValue para cada campo individualmente
+            profileRef.child("obstacleText").setValue(text)
+                .continueWithTask { profileRef.child("updatedAt").setValue(ServerValue.TIMESTAMP) }
                 .addOnCompleteListener { task ->
                     binding.btnContinue.isEnabled = true
                     if (task.isSuccessful) {
@@ -65,7 +62,7 @@ class ObstacleTextActivity : AppCompatActivity() {
                         startActivity(Intent(this, PersonalInfoActivity::class.java))
                         finish()
                     } else {
-                        Snackbar.make(binding.root, "Error al guardar", Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(binding.root, "Error: ${task.exception?.message}", Snackbar.LENGTH_LONG).show()
                     }
                 }
         }

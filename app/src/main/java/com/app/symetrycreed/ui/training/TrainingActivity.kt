@@ -25,11 +25,11 @@ class TrainingActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Rutina Rápida
+        // Rutina Rápida - AHORA INICIA EL ENTRENAMIENTO DIRECTAMENTE
         findViewById<View>(R.id.opt_rutina_rapida)?.setOnClickListener {
             android.util.Log.d("TrainingActivity", "Click: Rutina Rápida")
             val training = buildQuickTraining()
-            openExercisesWithTraining(training)
+            startActiveTraining(training) // ✓ CAMBIO: Inicia directamente
         }
 
         // Temporizador
@@ -39,21 +39,29 @@ class TrainingActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Sugerido 1: HIIT
+        // Sugerido 1: HIIT - AHORA INICIA EL ENTRENAMIENTO DIRECTAMENTE
         findViewById<View>(R.id.btn_comenzar_1)?.setOnClickListener {
             android.util.Log.d("TrainingActivity", "Click: Comenzar HIIT")
             val training = buildSuggestedHiit()
-            openExercisesWithTraining(training)
+            startActiveTraining(training) // ✓ CAMBIO: Inicia directamente
         }
 
-        // Sugerido 2: Fuerza Superior
+        // Sugerido 2: Fuerza Superior - AHORA INICIA EL ENTRENAMIENTO DIRECTAMENTE
         findViewById<View>(R.id.btn_comenzar_2)?.setOnClickListener {
             android.util.Log.d("TrainingActivity", "Click: Comenzar Fuerza")
             val training = buildSuggestedStrength()
-            openExercisesWithTraining(training)
+            startActiveTraining(training) // ✓ CAMBIO: Inicia directamente
         }
     }
 
+    // ✓ NUEVO MÉTODO: Inicia el entrenamiento activo directamente
+    private fun startActiveTraining(training: Training) {
+        val intent = Intent(this, ActiveTrainingActivity::class.java)
+        intent.putExtra("training", training)
+        startActivity(intent)
+    }
+
+    // Método auxiliar para abrir en modo edición (ya no se usa para los sugeridos)
     private fun openExercisesWithTraining(training: Training) {
         val intent = Intent(this, ExercisesActivity::class.java)
         intent.putExtra("training", training)
@@ -66,36 +74,39 @@ class TrainingActivity : AppCompatActivity() {
         val currentTime = System.currentTimeMillis()
         val exercises = listOf(
             Exercise(
-                id = "",
+                id = "ex_${currentTime}_1",
                 name = "Jumping Jacks",
                 series = 3,
                 reps = 20,
                 weightKg = 0.0,
                 muscle = "cardio",
-                restSec = 30
+                restSec = 30,
+                notes = "Mantén un ritmo constante"
             ),
             Exercise(
-                id = "",
+                id = "ex_${currentTime}_2",
                 name = "Push Ups",
                 series = 3,
                 reps = 12,
                 weightKg = 0.0,
                 muscle = "chest",
-                restSec = 60
+                restSec = 60,
+                notes = "Espalda recta"
             ),
             Exercise(
-                id = "",
+                id = "ex_${currentTime}_3",
                 name = "Squats",
                 series = 3,
                 reps = 15,
                 weightKg = 0.0,
                 muscle = "legs",
-                restSec = 60
+                restSec = 60,
+                notes = "Rodillas alineadas con los pies"
             )
         )
 
         return Training(
-            id = "",
+            id = "quick_${currentTime}",
             title = "Rutina Rápida",
             timestamp = currentTime,
             createdAt = currentTime,
@@ -108,7 +119,7 @@ class TrainingActivity : AppCompatActivity() {
         val currentTime = System.currentTimeMillis()
         val exercises = listOf(
             Exercise(
-                id = "",
+                id = "ex_${currentTime}_1",
                 name = "Burpees",
                 series = 4,
                 reps = 12,
@@ -118,7 +129,7 @@ class TrainingActivity : AppCompatActivity() {
                 notes = "Mantén el ritmo constante"
             ),
             Exercise(
-                id = "",
+                id = "ex_${currentTime}_2",
                 name = "Mountain Climbers",
                 series = 4,
                 reps = 20,
@@ -128,7 +139,7 @@ class TrainingActivity : AppCompatActivity() {
                 notes = "Abdomen contraído"
             ),
             Exercise(
-                id = "",
+                id = "ex_${currentTime}_3",
                 name = "High Knees",
                 series = 4,
                 reps = 30,
@@ -140,7 +151,7 @@ class TrainingActivity : AppCompatActivity() {
         )
 
         return Training(
-            id = "",
+            id = "hiit_${currentTime}",
             title = "Entrenamiento Rápido",
             timestamp = currentTime,
             createdAt = currentTime,
@@ -154,7 +165,7 @@ class TrainingActivity : AppCompatActivity() {
         val currentTime = System.currentTimeMillis()
         val exercises = listOf(
             Exercise(
-                id = "",
+                id = "ex_${currentTime}_1",
                 name = "Bench Press",
                 series = 4,
                 reps = 10,
@@ -164,7 +175,7 @@ class TrainingActivity : AppCompatActivity() {
                 notes = "Controla el descenso"
             ),
             Exercise(
-                id = "",
+                id = "ex_${currentTime}_2",
                 name = "Dumbbell Row",
                 series = 4,
                 reps = 10,
@@ -174,7 +185,7 @@ class TrainingActivity : AppCompatActivity() {
                 notes = "Mantén la espalda recta"
             ),
             Exercise(
-                id = "",
+                id = "ex_${currentTime}_3",
                 name = "Shoulder Press",
                 series = 3,
                 reps = 12,
@@ -186,7 +197,7 @@ class TrainingActivity : AppCompatActivity() {
         )
 
         return Training(
-            id = "",
+            id = "strength_${currentTime}",
             title = "Fuerza Superior",
             timestamp = currentTime,
             createdAt = currentTime,

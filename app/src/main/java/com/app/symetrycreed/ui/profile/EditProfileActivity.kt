@@ -53,11 +53,11 @@ class EditProfileActivity : AppCompatActivity() {
         etEmail.setText(user.email ?: "")
         etEmail.isEnabled = false // El email no se puede cambiar
 
-        // Cargar teléfono desde Firebase Database
-        db.child("users").child(user.uid).child("phone")
+        // Cargar datos del perfil desde Firebase Database
+        db.child("users").child(user.uid)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val phone = snapshot.getValue(String::class.java) ?: ""
+                    val phone = snapshot.child("phone").getValue(String::class.java) ?: ""
                     etPhone.setText(phone)
                 }
 
@@ -106,25 +106,38 @@ class EditProfileActivity : AppCompatActivity() {
 
         user.updateProfile(profileUpdates)
             .addOnSuccessListener {
-                // Actualizar teléfono en Firebase Database
-                val updates = hashMapOf<String, Any>(
-                    "name" to newName,
-                    "phone" to newPhone
-                )
+                // Actualizar datos en Firebase Database usando setValue para cada campo
+                val userRef = db.child("users").child(user.uid)
 
-                db.child("users").child(user.uid).updateChildren(updates)
+                // Actualizar nombre
+                userRef.child("name").setValue(newName)
                     .addOnSuccessListener {
-                        android.widget.Toast.makeText(
-                            this,
-                            "✓ Cambios guardados",
-                            android.widget.Toast.LENGTH_SHORT
-                        ).show()
-                        finish()
+                        // Actualizar teléfono
+                        userRef.child("phone").setValue(newPhone)
+                            .addOnSuccessListener {
+                                android.widget.Toast.makeText(
+                                    this,
+                                    "✓ Cambios guardados",
+                                    android.widget.Toast.LENGTH_SHORT
+                                ).show()
+                                finish()
+                            }
+                            .addOnFailureListener { e ->
+                                android.util.Log.e("EditProfile", "Error al guardar teléfono: ${e.message}")
+                                android.widget.Toast.makeText(
+                                    this,
+                                    "Error al guardar teléfono: ${e.message}",
+                                    android.widget.Toast.LENGTH_LONG
+                                ).show()
+                                btnSaveChanges.isEnabled = true
+                                btnSaveChanges.text = "Guardar Cambios"
+                            }
                     }
                     .addOnFailureListener { e ->
+                        android.util.Log.e("EditProfile", "Error al guardar nombre: ${e.message}")
                         android.widget.Toast.makeText(
                             this,
-                            "Error: ${e.message}",
+                            "Error al guardar nombre: ${e.message}",
                             android.widget.Toast.LENGTH_LONG
                         ).show()
                         btnSaveChanges.isEnabled = true
@@ -132,9 +145,10 @@ class EditProfileActivity : AppCompatActivity() {
                     }
             }
             .addOnFailureListener { e ->
+                android.util.Log.e("EditProfile", "Error al actualizar perfil: ${e.message}")
                 android.widget.Toast.makeText(
                     this,
-                    "Error: ${e.message}",
+                    "Error al actualizar perfil: ${e.message}",
                     android.widget.Toast.LENGTH_LONG
                 ).show()
                 btnSaveChanges.isEnabled = true

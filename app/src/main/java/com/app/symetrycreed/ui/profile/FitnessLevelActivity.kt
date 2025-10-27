@@ -28,13 +28,13 @@ class FitnessLevelActivity : AppCompatActivity() {
         binding.btnContinue.isEnabled = false
 
         binding.cardBeginner.setOnClickListener {
-            select(binding.cardBeginner, "beginner")  // ✅ lowercase
+            select(binding.cardBeginner, "beginner")
         }
         binding.cardIntermediate.setOnClickListener {
-            select(binding.cardIntermediate, "intermediate")  // ✅ lowercase
+            select(binding.cardIntermediate, "intermediate")
         }
         binding.cardAdvanced.setOnClickListener {
-            select(binding.cardAdvanced, "advanced")  // ✅ lowercase
+            select(binding.cardAdvanced, "advanced")
         }
 
         binding.btnContinue.setOnClickListener {
@@ -42,54 +42,128 @@ class FitnessLevelActivity : AppCompatActivity() {
             val level = selectedLevel
             if (uid == null || level == null) return@setOnClickListener
 
-            // ✅ VALIDACIÓN: level debe coincidir con el regex de las rules
             if (level !in listOf("beginner", "intermediate", "advanced")) {
                 Snackbar.make(binding.root, "Nivel inválido", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             binding.btnContinue.isEnabled = false
-            val userRef = db.child("users").child(uid)
-
-            userRef.get().addOnSuccessListener { snapshot ->
-                if (!snapshot.exists()) {
-                    // ✅ CREAR: Usuario nuevo con estructura correcta
-                    val newUser = mapOf(
-                        "uid" to uid,  // ✅ Campo requerido
-                        "createdAt" to ServerValue.TIMESTAMP,
-                        "lastLoginAt" to ServerValue.TIMESTAMP,
-                        "profile" to mapOf(
-                            "fitnessLevel" to level,
-                            "fitnessLevelUpdatedAt" to ServerValue.TIMESTAMP
-                        )
-                    )
-                    userRef.setValue(newUser)
-                        .addOnSuccessListener { goNext() }
-                        .addOnFailureListener { e ->
-                            binding.btnContinue.isEnabled = true
-                            Snackbar.make(binding.root, "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
-                        }
-                } else {
-                    // ✅ ACTUALIZAR: Solo el perfil
-                    val updates = mapOf(
-                        "lastLoginAt" to ServerValue.TIMESTAMP,
-                        "profile/fitnessLevel" to level,
-                        "profile/fitnessLevelUpdatedAt" to ServerValue.TIMESTAMP
-                    )
-                    userRef.updateChildren(updates)
-                        .addOnSuccessListener { goNext() }
-                        .addOnFailureListener { e ->
-                            binding.btnContinue.isEnabled = true
-                            Snackbar.make(binding.root, "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
-                        }
-                }
-            }.addOnFailureListener { e ->
-                binding.btnContinue.isEnabled = true
-                Snackbar.make(binding.root, "Error de conexión: ${e.message}", Snackbar.LENGTH_LONG).show()
-            }
+            saveFitnessLevel(uid, level)
         }
 
         applySelectionUI(null)
+    }
+
+    private fun saveFitnessLevel(uid: String, level: String) {
+        val userRef = db.child("users").child(uid)
+
+        userRef.get().addOnSuccessListener { snapshot ->
+            if (!snapshot.exists()) {
+                // Usuario nuevo - crear estructura completa
+                createNewUser(uid, level)
+            } else {
+                // Usuario existente - actualizar solo fitness level
+                updateFitnessLevel(uid, level)
+            }
+        }.addOnFailureListener { e ->
+            binding.btnContinue.isEnabled = true
+            android.util.Log.e("FitnessLevel", "Error checking user: ${e.message}", e)
+            Snackbar.make(binding.root, "Error de conexión: ${e.message}", Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    private fun createNewUser(uid: String, level: String) {
+        val userRef = db.child("users").child(uid)
+        val profileRef = userRef.child("profile")
+
+        // Crear usuario campo por campo para evitar problemas de validación
+        userRef.child("uid").setValue(uid)
+            .addOnSuccessListener {
+                android.util.Log.d("FitnessLevel", "UID set")
+                // Crear createdAt
+                userRef.child("createdAt").setValue(ServerValue.TIMESTAMP)
+                    .addOnSuccessListener {
+                        android.util.Log.d("FitnessLevel", "createdAt set")
+                        // Crear lastLoginAt
+                        userRef.child("lastLoginAt").setValue(ServerValue.TIMESTAMP)
+                            .addOnSuccessListener {
+                                android.util.Log.d("FitnessLevel", "lastLoginAt set")
+                                // Crear fitnessLevel
+                                profileRef.child("fitnessLevel").setValue(level)
+                                    .addOnSuccessListener {
+                                        android.util.Log.d("FitnessLevel", "fitnessLevel set")
+                                        // Crear fitnessLevelUpdatedAt
+                                        profileRef.child("fitnessLevelUpdatedAt").setValue(ServerValue.TIMESTAMP)
+                                            .addOnSuccessListener {
+                                                android.util.Log.d("FitnessLevel", "User created successfully")
+                                                goNext()
+                                            }
+                                            .addOnFailureListener { e ->
+                                                binding.btnContinue.isEnabled = true
+                                                android.util.Log.e("FitnessLevel", "Error setting fitnessLevelUpdatedAt: ${e.message}", e)
+                                                Snackbar.make(binding.root, "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
+                                            }
+                                    }
+                                    .addOnFailureListener { e ->
+                                        binding.btnContinue.isEnabled = true
+                                        android.util.Log.e("FitnessLevel", "Error setting fitnessLevel: ${e.message}", e)
+                                        Snackbar.make(binding.root, "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
+                                    }
+                            }
+                            .addOnFailureListener { e ->
+                                binding.btnContinue.isEnabled = true
+                                android.util.Log.e("FitnessLevel", "Error setting lastLoginAt: ${e.message}", e)
+                                Snackbar.make(binding.root, "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
+                            }
+                    }
+                    .addOnFailureListener { e ->
+                        binding.btnContinue.isEnabled = true
+                        android.util.Log.e("FitnessLevel", "Error setting createdAt: ${e.message}", e)
+                        Snackbar.make(binding.root, "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
+                    }
+            }
+            .addOnFailureListener { e ->
+                binding.btnContinue.isEnabled = true
+                android.util.Log.e("FitnessLevel", "Error setting uid: ${e.message}", e)
+                Snackbar.make(binding.root, "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
+            }
+    }
+
+    private fun updateFitnessLevel(uid: String, level: String) {
+        val userRef = db.child("users").child(uid)
+        val profileRef = userRef.child("profile")
+
+        // Actualizar cada campo individualmente
+        profileRef.child("fitnessLevel").setValue(level)
+            .addOnSuccessListener {
+                android.util.Log.d("FitnessLevel", "Fitness level updated")
+                // Actualizar timestamp
+                profileRef.child("fitnessLevelUpdatedAt").setValue(ServerValue.TIMESTAMP)
+                    .addOnSuccessListener {
+                        android.util.Log.d("FitnessLevel", "Timestamp updated")
+                        // Actualizar lastLoginAt
+                        userRef.child("lastLoginAt").setValue(ServerValue.TIMESTAMP)
+                            .addOnSuccessListener {
+                                android.util.Log.d("FitnessLevel", "All updates successful")
+                                goNext()
+                            }
+                            .addOnFailureListener { e ->
+                                android.util.Log.e("FitnessLevel", "Error updating lastLoginAt: ${e.message}", e)
+                                // Continuar de todas formas
+                                goNext()
+                            }
+                    }
+                    .addOnFailureListener { e ->
+                        android.util.Log.e("FitnessLevel", "Error updating timestamp: ${e.message}", e)
+                        // Continuar de todas formas
+                        goNext()
+                    }
+            }
+            .addOnFailureListener { e ->
+                binding.btnContinue.isEnabled = true
+                android.util.Log.e("FitnessLevel", "Error updating fitness level: ${e.message}", e)
+                Snackbar.make(binding.root, "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
+            }
     }
 
     private fun goNext() {

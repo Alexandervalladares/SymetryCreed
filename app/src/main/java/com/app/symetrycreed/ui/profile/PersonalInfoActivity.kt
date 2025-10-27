@@ -37,8 +37,8 @@ class PersonalInfoActivity : AppCompatActivity() {
                 group: MaterialButtonToggleGroup, checkedId, isChecked ->
             if (!isChecked) return@addOnButtonCheckedListener
             selectedSex = when (checkedId) {
-                binding.btnMale.id -> "male"    // ✅ Coincide con las rules
-                binding.btnFemale.id -> "female" // ✅ Coincide con las rules
+                binding.btnMale.id -> "male"
+                binding.btnFemale.id -> "female"
                 else -> null
             }
         }
@@ -85,13 +85,11 @@ class PersonalInfoActivity : AppCompatActivity() {
 
         var ok = true
 
-        // ✅ VALIDACIÓN: sex debe ser "male" o "female"
         if (sex == null) {
             Snackbar.make(binding.root, "Selecciona tu sexo biológico", Snackbar.LENGTH_LONG).show()
             ok = false
         }
 
-        // ✅ VALIDACIÓN: birthdate formato YYYY-MM-DD
         if (birthIso.isNullOrEmpty()) {
             binding.tilBirthdate.error = "Selecciona tu fecha"
             ok = false
@@ -100,14 +98,12 @@ class PersonalInfoActivity : AppCompatActivity() {
             ok = false
         }
 
-        // ✅ VALIDACIÓN: peso entre 30 y 300 kg (según rules)
         val weight = weightStr.toFloatOrNull()
         if (weight == null || weight < 30f || weight > 300f) {
             binding.tilWeight.error = "Ingresa un peso válido (30–300 kg)"
             ok = false
         }
 
-        // ✅ VALIDACIÓN: altura entre 120 y 250 cm (según rules)
         val height = heightStr.toFloatOrNull()
         if (height == null || height < 120f || height > 250f) {
             binding.tilHeight.error = "Ingresa una altura válida (120–250 cm)"
@@ -116,7 +112,6 @@ class PersonalInfoActivity : AppCompatActivity() {
 
         if (!ok) return
 
-        // ✅ VALIDACIÓN: BMI entre 10 y 60 (según rules)
         val bmi = if (weight != null && height != null) {
             val m = height / 100f
             round((weight / m.pow(2)) * 10) / 10.0
@@ -139,14 +134,13 @@ class PersonalInfoActivity : AppCompatActivity() {
 
         userRef.get().addOnSuccessListener { snapshot ->
             if (!snapshot.exists()) {
-                // ✅ CREAR: Estructura inicial del usuario
+                // CREAR: Estructura inicial del usuario
                 val newUser = mutableMapOf<String, Any>(
-                    "uid" to uid,  // ✅ Campo requerido en las rules
+                    "uid" to uid,
                     "createdAt" to ServerValue.TIMESTAMP,
                     "lastLoginAt" to ServerValue.TIMESTAMP
                 )
 
-                // ✅ Profile como objeto anidado
                 val profileData = mutableMapOf<String, Any>(
                     "sex" to sex!!,
                     "birthdate" to birthIso!!,
@@ -170,21 +164,22 @@ class PersonalInfoActivity : AppCompatActivity() {
                         Snackbar.make(binding.root, "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
                     }
             } else {
-                // ✅ ACTUALIZAR: Solo el perfil
-                val updates = mutableMapOf<String, Any>(
-                    "lastLoginAt" to ServerValue.TIMESTAMP,
-                    "profile/sex" to sex!!,
-                    "profile/birthdate" to birthIso!!,
-                    "profile/weightKg" to weight!!,
-                    "profile/heightCm" to height!!,
-                    "profile/updatedAt" to ServerValue.TIMESTAMP
-                )
+                // ACTUALIZAR: Usar setValue para cada campo individualmente
+                val profileRef = userRef.child("profile")
 
-                if (bmi != null) {
-                    updates["profile/bmi"] = bmi
-                }
-
-                userRef.updateChildren(updates)
+                profileRef.child("sex").setValue(sex!!)
+                    .continueWithTask { profileRef.child("birthdate").setValue(birthIso!!) }
+                    .continueWithTask { profileRef.child("weightKg").setValue(weight!!) }
+                    .continueWithTask { profileRef.child("heightCm").setValue(height!!) }
+                    .continueWithTask {
+                        if (bmi != null) {
+                            profileRef.child("bmi").setValue(bmi)
+                        } else {
+                            com.google.android.gms.tasks.Tasks.forResult(null)
+                        }
+                    }
+                    .continueWithTask { profileRef.child("updatedAt").setValue(ServerValue.TIMESTAMP) }
+                    .continueWithTask { userRef.child("lastLoginAt").setValue(ServerValue.TIMESTAMP) }
                     .addOnSuccessListener {
                         goToCenterActivity()
                     }
