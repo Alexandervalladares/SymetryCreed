@@ -55,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="+ Agregar Objetivo"
+        android:text="@string/agregar_objetivo"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"

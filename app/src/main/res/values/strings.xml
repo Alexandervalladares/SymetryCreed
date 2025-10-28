@@ -7,4 +7,17 @@
     <string name="default_web_client_id">
         542007435111-9jqarn4go0d27j92aqshnip0fkkmbrnp.apps.googleusercontent.com
     </string>
+    <string name="continuar">Continuar</string>
+    <string name="mayor_obst_culo">Mayor Obstáculo</string>
+    <string name="encuentra_respuestas_rapidas">Encuentra respuestas rápidas</string>
+    <string name="preguntas_frecuentes">Preguntas Frecuentes</string>
+    <string name="volver">Volver</string>
+    <string name="contacto">Contacto</string>
+    <string name="contactar_soporte">Contactar Soporte</string>
+    <string name="envianos_un_email">Envíanos un email</string>
+    <string name="tutoriales">Tutoriales</string>
+    <string name="aprende_a_usar_la_app">Aprende a usar la app</string>
+    <string name="t_rminos_y_condiciones">Términos y Condiciones</string>
+    <string name="lee_nuestros_t_rminos">Lee nuestros términos</string>
+    <string name="agregar_objetivo">+ Agregar Objetivo</string>
 </resources>

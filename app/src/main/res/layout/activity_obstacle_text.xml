@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mayor Obstáculo"
+            android:text="@string/mayor_obst_culo"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="24sp"
@@ -79,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginTop="24dp"
-            android:text="Continuar"
+            android:text="@string/continuar"
             android:textSize="16sp"
             android:enabled="false"
             android:backgroundTint="@color/red_accent"/>

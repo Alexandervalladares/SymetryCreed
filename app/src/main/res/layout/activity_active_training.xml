@@ -16,8 +16,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
-
-            <!-- Header -->
             <TextView
                 android:id="@+id/tvTrainingTitle"
                 android:layout_width="wrap_content"
@@ -28,8 +26,6 @@
                 android:textStyle="bold"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp" />
-
-            <!-- Contador de ejercicios -->
             <TextView
                 android:id="@+id/tvExerciseCounter"
                 android:layout_width="wrap_content"
@@ -66,7 +62,6 @@
                     android:orientation="vertical"
                     android:padding="24dp">
 
-                    <!-- Nombre del ejercicio -->
                     <TextView
                         android:id="@+id/tvCurrentExerciseName"
                         android:layout_width="wrap_content"
@@ -76,8 +71,6 @@
                         android:textSize="28sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="16dp" />
-
-                    <!-- Info del ejercicio -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -113,8 +106,7 @@
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="16dp" />
-
-                    <!-- Timer de descanso -->
+}
                     <TextView
                         android:id="@+id/tvRestTimer"
                         android:layout_width="match_parent"
@@ -129,7 +121,6 @@
                         android:visibility="gone"
                         android:layout_marginBottom="16dp" />
 
-                    <!-- Indicadores de series -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -156,7 +147,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Botón completar serie -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCompleteSet"
                 android:layout_width="match_parent"

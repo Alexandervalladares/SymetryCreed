@@ -23,7 +23,7 @@
             android:clickable="true"
             android:focusable="true"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Volver"
+            android:contentDescription="@string/volver"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -91,7 +91,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Preguntas Frecuentes"
+                            android:text="@string/preguntas_frecuentes"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -99,7 +99,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Encuentra respuestas rápidas"
+                            android:text="@string/encuentra_respuestas_rapidas"
                             android:textColor="@color/textSecondary"
                             android:textSize="13sp"
                             android:layout_marginTop="4dp" />
@@ -145,7 +145,7 @@
                         android:tint="@color/white"
                         android:padding="8dp"
                         android:layout_marginEnd="16dp"
-                        android:contentDescription="Contacto" />
+                        android:contentDescription="@string/contacto" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -156,7 +156,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Contactar Soporte"
+                            android:text="@string/contactar_soporte"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -164,7 +164,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Envíanos un email"
+                            android:text="@string/envianos_un_email"
                             android:textColor="@color/textSecondary"
                             android:textSize="13sp"
                             android:layout_marginTop="4dp" />
@@ -210,7 +210,7 @@
                         android:tint="#3BD91E"
                         android:padding="8dp"
                         android:layout_marginEnd="16dp"
-                        android:contentDescription="Tutoriales" />
+                        android:contentDescription="@string/tutoriales" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -221,7 +221,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tutoriales"
+                            android:text="@string/tutoriales"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -229,7 +229,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Aprende a usar la app"
+                            android:text="@string/aprende_a_usar_la_app"
                             android:textColor="@color/textSecondary"
                             android:textSize="13sp"
                             android:layout_marginTop="4dp" />
@@ -286,7 +286,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Términos y Condiciones"
+                            android:text="@string/t_rminos_y_condiciones"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -294,7 +294,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Lee nuestros términos"
+                            android:text="@string/lee_nuestros_t_rminos"
                             android:textColor="@color/textSecondary"
                             android:textSize="13sp"
                             android:layout_marginTop="4dp" />
