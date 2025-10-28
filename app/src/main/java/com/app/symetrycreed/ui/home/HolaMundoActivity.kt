@@ -17,10 +17,9 @@ class HolaMundoActivity : AppCompatActivity() {
         binding = ActivityHolaMundoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Texto de bienvenida
         val user = auth.currentUser
         val nombre = user?.displayName ?: "Entrenador"
-        // Mostrar el nombre en el mensaje de bienvenida
+
         binding.tvBienvenida.text = "¡Bienvenido a CreedGym, $nombre!"
         binding.tvDescripcion.text =
             "Vamos a configurar tu perfil para crear entrenamientos personalizados"

@@ -46,9 +46,8 @@ class GenerateTrainingActivity : AppCompatActivity() {
             }
         }
         spinnerLevel.adapter = adapter
-        spinnerLevel.setSelection(1) // Intermedio por defecto
+        spinnerLevel.setSelection(1)
 
-        // ✅ Crear diálogo con tema oscuro y botones rojos
         val dialog = androidx.appcompat.app.AlertDialog.Builder(this, R.style.AlertDialogTheme)
             .setTitle("Crear Nuevo Plan")
             .setView(dialogView)
@@ -57,7 +56,6 @@ class GenerateTrainingActivity : AppCompatActivity() {
             .create()
 
         dialog.setOnShowListener {
-            // ✅ Cambiar color de botones a rojo
             dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE)?.apply {
                 setTextColor(getColor(R.color.red_accent))
                 setOnClickListener {
@@ -91,8 +89,6 @@ class GenerateTrainingActivity : AppCompatActivity() {
             dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)?.apply {
                 setTextColor(getColor(R.color.red_accent))
             }
-
-            // ✅ Cambiar color del título
             val titleTextView = dialog.findViewById<TextView>(androidx.appcompat.R.id.alertTitle)
             titleTextView?.setTextColor(getColor(R.color.red_accent))
         }
@@ -155,7 +151,6 @@ class GenerateTrainingActivity : AppCompatActivity() {
     }
 
     private fun loadPlansFromFirebase() {
-        // ✅ Leer desde /plans (donde están guardados actualmente)
         val plansRef = db.child("plans")
 
         plansRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -176,18 +171,12 @@ class GenerateTrainingActivity : AppCompatActivity() {
                 for (child in snapshot.children) {
                     try {
                         val planId = child.key ?: continue
-
-                        // Leer cada campo individualmente
                         val title = child.child("title").getValue(String::class.java)
                         val level = child.child("level").getValue(String::class.java)
                         val shortDescription = child.child("shortDescription").getValue(String::class.java) ?: ""
                         val stripeColorHex = child.child("stripeColorHex").getValue(String::class.java) ?: "#FF5160"
-
-                        // ✅ IMPORTANTE: Leer weeks y trainingsCount como String primero
                         val weeksRaw = child.child("weeks").value
                         val trainingsCountRaw = child.child("trainingsCount").value
-
-                        // Extraer números (manejar "8 semanas" o 8)
                         val weeks = when (weeksRaw) {
                             is String -> weeksRaw.replace(Regex("[^0-9]"), "").toIntOrNull() ?: 0
                             is Long -> weeksRaw.toInt()
@@ -253,8 +242,6 @@ class GenerateTrainingActivity : AppCompatActivity() {
         val leftStripe = cardView.findViewById<android.view.View>(R.id.leftStripe)
 
         tvTitle.text = plan.title
-
-        // ✅ Traducir y capitalizar nivel
         tvLevel.text = when(plan.level.lowercase()) {
             "beginner", "principiante" -> "Principiante"
             "intermediate", "intermedio" -> "Intermedio"
@@ -263,8 +250,6 @@ class GenerateTrainingActivity : AppCompatActivity() {
                 if (it.isLowerCase()) it.titlecase() else it.toString()
             }
         }
-
-        // ✅ Formatear números a texto legible
         tvWeeks.text = if (plan.weeks > 0) {
             "${plan.weeks} semana${if (plan.weeks != 1) "s" else ""}"
         } else {
@@ -276,8 +261,6 @@ class GenerateTrainingActivity : AppCompatActivity() {
         } else {
             "N/A"
         }
-
-        // ✅ Color de la banda lateral
         try {
             leftStripe.setBackgroundColor(Color.parseColor(plan.stripeColorHex))
         } catch (t: Throwable) {
@@ -287,8 +270,6 @@ class GenerateTrainingActivity : AppCompatActivity() {
 
         val rootLinear = cardView.findViewById<LinearLayout>(R.id.planCardRoot)
         var detailsContainer = cardView.findViewById<android.view.View>(R.id.planDetailsContainer)
-
-        // ✅ Crear o encontrar el contenedor de descripción
         if (detailsContainer == null) {
             val details = LinearLayout(this@GenerateTrainingActivity).apply {
                 orientation = LinearLayout.VERTICAL
@@ -310,8 +291,6 @@ class GenerateTrainingActivity : AppCompatActivity() {
             val tvDesc = detailsContainer.findViewById<TextView?>(R.id.tvPlanPreviewDescription)
             tvDesc?.text = plan.shortDescription.ifBlank { "Sin descripción" }
         }
-
-        // ✅ Click: Mostrar/ocultar descripción
         cardView.setOnClickListener {
             detailsContainer.visibility = if (detailsContainer.visibility == android.view.View.VISIBLE) {
                 android.view.View.GONE
@@ -319,8 +298,6 @@ class GenerateTrainingActivity : AppCompatActivity() {
                 android.view.View.VISIBLE
             }
         }
-
-        // ✅ Long Press: Copiar plan al usuario
         cardView.setOnLongClickListener {
             copyPlanToUser(plan)
             true

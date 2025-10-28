@@ -3,9 +3,9 @@ package com.app.symetrycreed.model
 data class Plan(
     var id: String = "",
     var title: String = "",
-    var level: String = "", // "beginner", "intermediate", "advanced"
-    var weeks: Int = 0,  // ✅ CAMBIO CRÍTICO: Int en lugar de String
-    var trainingsCount: Int = 0,  // ✅ CAMBIO CRÍTICO: Int en lugar de String
+    var level: String = "",
+    var weeks: Int = 0,
+    var trainingsCount: Int = 0,
     var stripeColorHex: String = "#FF5160",
     var shortDescription: String = "",
     var createdAt: Long = 0L,

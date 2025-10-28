@@ -22,8 +22,6 @@ data class Training(
                 notes.length <= 500 &&
                 exercises.all { it.isValid() }
     }
-
-    // ✅ SIMPLIFICADO: No convierte exercises aquí
     fun toMap(): Map<String, Any?> {
         return hashMapOf(
             "id" to id,

@@ -18,8 +18,6 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStartBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // 👉 Sign Up: registro con correo/contraseña
         binding.btnSignUp.setOnClickListener {
             startActivity(Intent(this, SignUpActivity::class.java))
         }

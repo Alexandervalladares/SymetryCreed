@@ -18,35 +18,31 @@ class TrainingActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        // Nuevo Entrenamiento
+
         findViewById<View>(R.id.btnNewTraining)?.setOnClickListener {
             android.util.Log.d("TrainingActivity", "Click: Nuevo Entrenamiento")
             val intent = Intent(this, ExercisesActivity::class.java)
             startActivity(intent)
         }
 
-        // Rutina Rápida - AHORA INICIA EL ENTRENAMIENTO DIRECTAMENTE
         findViewById<View>(R.id.opt_rutina_rapida)?.setOnClickListener {
             android.util.Log.d("TrainingActivity", "Click: Rutina Rápida")
             val training = buildQuickTraining()
             startActiveTraining(training) // ✓ CAMBIO: Inicia directamente
         }
 
-        // Temporizador
         findViewById<View>(R.id.opt_temporizador)?.setOnClickListener {
             android.util.Log.d("TrainingActivity", "Click: Temporizador")
             val intent = Intent(this, TimerActivity::class.java)
             startActivity(intent)
         }
 
-        // Sugerido 1: HIIT - AHORA INICIA EL ENTRENAMIENTO DIRECTAMENTE
         findViewById<View>(R.id.btn_comenzar_1)?.setOnClickListener {
             android.util.Log.d("TrainingActivity", "Click: Comenzar HIIT")
             val training = buildSuggestedHiit()
             startActiveTraining(training) // ✓ CAMBIO: Inicia directamente
         }
 
-        // Sugerido 2: Fuerza Superior - AHORA INICIA EL ENTRENAMIENTO DIRECTAMENTE
         findViewById<View>(R.id.btn_comenzar_2)?.setOnClickListener {
             android.util.Log.d("TrainingActivity", "Click: Comenzar Fuerza")
             val training = buildSuggestedStrength()
@@ -61,14 +57,11 @@ class TrainingActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    // Método auxiliar para abrir en modo edición (ya no se usa para los sugeridos)
     private fun openExercisesWithTraining(training: Training) {
         val intent = Intent(this, ExercisesActivity::class.java)
         intent.putExtra("training", training)
         startActivity(intent)
     }
-
-    // ========== ENTRENAMIENTOS PREDEFINIDOS ==========
 
     private fun buildQuickTraining(): Training {
         val currentTime = System.currentTimeMillis()

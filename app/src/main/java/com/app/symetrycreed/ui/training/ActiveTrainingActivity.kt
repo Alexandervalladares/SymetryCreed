@@ -39,15 +39,12 @@ class ActiveTrainingActivity : AppCompatActivity() {
 
     private val auth by lazy { FirebaseAuth.getInstance() }
     private val db by lazy { FirebaseDatabase.getInstance().reference }
-
-    // Para trackear sets completados por ejercicio
     private val completedSets = mutableMapOf<Int, MutableSet<Int>>() // exerciseIndex -> set of completed set indices
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_active_training)
 
-        // Obtener el training del intent
         training = intent.getParcelableExtra("training") ?: run {
             Toast.makeText(this, "Error: No se encontró el entrenamiento", Toast.LENGTH_SHORT).show()
             finish()

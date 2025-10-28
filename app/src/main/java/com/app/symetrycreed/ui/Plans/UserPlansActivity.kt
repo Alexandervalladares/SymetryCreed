@@ -28,11 +28,10 @@ class UserPlansActivity : AppCompatActivity() {
 
         tvTitle.text = "Planes Disponibles"
 
-        loadGlobalPlans() // ✅ CAMBIO: Cargar planes globales
+        loadGlobalPlans()
     }
 
     private fun loadGlobalPlans() {
-        // ✅ Leer desde /plans (planes globales)
         val ref = db.child("plans")
 
         ref.addListenerForSingleValueEvent(object : ValueEventListener {

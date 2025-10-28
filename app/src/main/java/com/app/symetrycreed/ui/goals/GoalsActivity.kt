@@ -193,12 +193,6 @@ class GoalsActivity : AppCompatActivity() {
         val etDescription = dialogView.findViewById<EditText>(R.id.etGoalDescription)
         val etTarget = dialogView.findViewById<EditText>(R.id.etGoalTarget)
         val etUnit = dialogView.findViewById<EditText>(R.id.etGoalUnit)
-
-        // Agregar Spinner para period si lo tienes en el layout, si no, usar "total" por defecto
-        // val spinnerPeriod = dialogView.findViewById<Spinner>(R.id.spinnerPeriod)
-        // val periods = arrayOf("total", "daily", "weekly", "monthly")
-        // spinnerPeriod.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, periods)
-
         AlertDialog.Builder(this)
             .setTitle("Nuevo Objetivo")
             .setView(dialogView)
@@ -244,9 +238,9 @@ class GoalsActivity : AppCompatActivity() {
         val goalData = hashMapOf<String, Any>(
             "id" to goalId,
             "title" to title,
-            "targetValue" to target,  // ✅ Campo requerido
-            "period" to period,        // ✅ Campo requerido (total, daily, weekly, monthly)
-            "createdAt" to System.currentTimeMillis()  // ✅ Campo requerido
+            "targetValue" to target,
+            "period" to period,
+            "createdAt" to System.currentTimeMillis()
         )
 
         // Agregar campos opcionales solo si tienen valor
@@ -258,12 +252,8 @@ class GoalsActivity : AppCompatActivity() {
             goalData["unit"] = unit
         }
 
-        // currentValue es opcional, pero es útil inicializarlo en 0
         goalData["currentValue"] = 0.0
 
-        // colorHex no está en las reglas, pero puedes agregarlo si actualizas las reglas
-        // o quitarlo si no es necesario
-        // goalData["colorHex"] = randomColor
 
         android.util.Log.d("GoalsActivity", "📝 Creando objetivo: $goalData")
 
@@ -312,8 +302,8 @@ class GoalsActivity : AppCompatActivity() {
         val goalRef = db.child("users").child(user.uid).child("goals").child(goalId)
 
         val updates = hashMapOf<String, Any>(
-            "currentValue" to newValue,  // ✅ Usar "currentValue" en lugar de "current"
-            "updatedAt" to System.currentTimeMillis()  // ✅ Agregar timestamp de actualización
+            "currentValue" to newValue,
+            "updatedAt" to System.currentTimeMillis()
         )
 
         goalRef.updateChildren(updates)

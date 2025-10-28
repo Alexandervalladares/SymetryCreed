@@ -10,7 +10,6 @@ import com.app.symetrycreed.R
 import com.app.symetrycreed.model.Exercise
 import com.app.symetrycreed.model.Training
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.card.MaterialCardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
