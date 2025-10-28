@@ -18,6 +18,7 @@ Carlos Mauricio López García  -  LG151035
 
 ## DOCUMENTO FASE FINAL
 
+[DOCUMENTO FINAL MOVILES.pdf](https://github.com/user-attachments/files/23179583/DOCUMENTO.FINAL.MOVILES.pdf)
 
 ## DOCUMENTO FASE 01
 
